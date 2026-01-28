@@ -14,8 +14,8 @@ class Style {
     color: kTextColor,
   );
   static const bodyLarge = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
     color: kTextColor,
   );
 
