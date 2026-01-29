@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({super.key, required this.text, required this.onTap});
+  const PrimaryButton({
+    super.key,
+    required this.text,
+    required this.onTap,
+    required this.isLoading,
+  });
   final String text;
   final VoidCallback onTap;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

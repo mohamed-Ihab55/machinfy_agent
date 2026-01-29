@@ -15,6 +15,6 @@ class HomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WelcomeScreen();
+    return SplashScreen();
   }
 }

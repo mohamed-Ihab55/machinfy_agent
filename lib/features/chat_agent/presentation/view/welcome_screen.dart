@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/creat_account.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/login_screen.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/widget/primary_button.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/widget/secondary_button.dart';
+import 'package:machinfy_agent/model/viewModel/login_view_model.dart';
+import 'package:provider/provider.dart';
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => LoginViewModel(),
+      child: const WelcomeScreen(),
+    );
+  }
+}
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -64,9 +81,26 @@ class WelcomeScreen extends StatelessWidget {
 
               const Spacer(flex: 3), // 👈 يزق الأزرار لتحت
               // 🔹 الأزرار (نفس مكان الصورة)
-              PrimaryButton(text: 'Sign In', onTap: () {}),
+              PrimaryButton(
+                text: 'Sign In',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+                isLoading: vm.isLoading,
+              ),
               const SizedBox(height: 12),
-              SecondaryButton(text: 'Create Account', onTap: () {}),
+              SecondaryButton(
+                text: 'Create Account',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreatAccount()),
+                  );
+                },
+              ),
 
               const Spacer(flex: 1),
 
