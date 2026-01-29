@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/view/home_screen.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,10 +22,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
-
-
-

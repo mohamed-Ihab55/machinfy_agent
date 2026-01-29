@@ -97,7 +97,7 @@ class WelcomeScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CreatAccount()),
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
               ),

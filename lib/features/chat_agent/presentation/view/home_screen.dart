@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/custom_app_bar.dart';
+
+import 'package:machinfy_agent/features/chat_agent/presentation/view/welcome_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CustomAppBar(), body: HomeScreenBody());
+    return Scaffold(body: HomeScreenBody());
   }
 }
 
@@ -15,6 +16,6 @@ class HomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold();
   }
 }
