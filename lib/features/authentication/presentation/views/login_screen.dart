@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/auth_text_field.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/primary_button.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/text_button_icon.dart';
-import 'package:machinfy_agent/model/viewModel/login_view_model.dart';
+import 'package:machinfy_agent/core/utils/primary_button.dart';
+import 'package:machinfy_agent/core/utils/text_button_icon.dart';
+import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
+import 'package:machinfy_agent/features/authentication/models/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {

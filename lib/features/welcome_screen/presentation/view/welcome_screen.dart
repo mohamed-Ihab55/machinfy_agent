@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/view/creat_account.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/view/login_screen.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/primary_button.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/widget/secondary_button.dart';
-import 'package:machinfy_agent/model/viewModel/login_view_model.dart';
+import 'package:machinfy_agent/core/utils/primary_button.dart';
+import 'package:machinfy_agent/core/utils/secondary_button.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/creat_account.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/login_screen.dart';
+import 'package:machinfy_agent/features/authentication/models/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {

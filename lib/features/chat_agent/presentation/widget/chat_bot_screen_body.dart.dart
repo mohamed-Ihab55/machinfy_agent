@@ -6,14 +6,14 @@ import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/chat_agent/cubit/chat_cubit.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/widget/message_bubble.dart';
 
-class ChatBotScreen extends StatefulWidget {
-  const ChatBotScreen({super.key});
+class ChatBotScreenBody extends StatefulWidget {
+  const ChatBotScreenBody({super.key});
 
   @override
-  State<ChatBotScreen> createState() => _ChatBotScreenState();
+  State<ChatBotScreenBody> createState() => _ChatBotScreenBodyState();
 }
 
-class _ChatBotScreenState extends State<ChatBotScreen> {
+class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -82,7 +82,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                   horizontal: 16,
                   vertical: 8,
                 ),
-                color: kErrormsg!.withValues(alpha: 0.1),
+                color: kErrormsg!,
                 child: Row(
                   children: [
                     Icon(Icons.error_outline, color: kErrormsg, size: 20),
@@ -90,7 +90,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                     Expanded(
                       child: Text(
                         state.errorMessage,
-                        style: Style.bodysmall.copyWith(color: kErrormsg),
+                        style: Style.bodysmall.copyWith(color: kTexttErrormsg),
                       ),
                     ),
                   ],

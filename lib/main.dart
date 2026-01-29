@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:machinfy_agent/core/config.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/features/chat_agent/cubit/chat_cubit.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/view/home_screen.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
+import 'package:machinfy_agent/features/chat_agent/services/openai_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,12 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: BlocProvider(
+        create: (context) => ChatCubit(
+          openAIService: OpenAIService(apiKey: AppConfig.openAIApiKey),
+        ),
+        child: const ChatBotScreen(),
+      ),
     );
   }
 }
