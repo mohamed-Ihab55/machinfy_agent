@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: IconButton(
             icon: const Icon(Icons.menu, size: 35),
             onPressed: () {
-              // Handle notification button press
+              Scaffold.of(context).openEndDrawer();
             },
           ),
         ),

@@ -8,3 +8,5 @@ final kErrormsg = Colors.red[50];
 final kTexttErrormsg = Colors.red[500];
 final kBorderTextField = Colors.grey[300];
 const kSendAndCircularIndicator = Colors.white;
+const kLabelText = Color(0xFF757575);
+const kNotificationMsg= Color(0xFFE3F2FD);

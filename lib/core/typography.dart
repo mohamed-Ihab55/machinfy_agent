@@ -20,4 +20,5 @@ class Style {
   );
 
   static const bodysmall = TextStyle(fontSize: 14, color: kTextColor);
+  static const subTitle = TextStyle(fontSize: 13, color: Color(0xFF757575));
 }
