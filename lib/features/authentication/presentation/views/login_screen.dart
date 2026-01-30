@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginBody extends StatelessWidget {
-  const _LoginBody({super.key});
+  const _LoginBody();
 
   @override
   Widget build(BuildContext context) {

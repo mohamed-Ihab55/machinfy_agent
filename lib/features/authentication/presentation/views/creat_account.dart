@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
+import 'package:machinfy_agent/features/authentication/models/register_view_model';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
-import 'package:machinfy_agent/model/viewModel/register_view_model';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
