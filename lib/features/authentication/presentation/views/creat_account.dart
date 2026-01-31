@@ -3,7 +3,6 @@ import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 import 'package:machinfy_agent/features/authentication/models/register_view_model';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -150,7 +149,9 @@ class _RegisterBody extends StatelessWidget {
                     style: TextStyle(fontSize: 12.5, color: Color(0xFF6B7280)),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text(
                       'Sign In',
                       style: TextStyle(
