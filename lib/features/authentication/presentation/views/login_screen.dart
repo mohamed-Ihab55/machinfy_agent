@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/creat_account.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/reset_password.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 import 'package:machinfy_agent/features/authentication/models/login_view_model.dart';
+import 'package:machinfy_agent/features/chat_agent/cubit/chat_cubit.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -102,7 +107,12 @@ class _LoginBody extends StatelessWidget {
                   Spacer(),
                   TextButton(
                     onPressed: () {
-                      // TODO: forgot password
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ResetPasswordScreen(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Forgot Password?',
@@ -121,7 +131,16 @@ class _LoginBody extends StatelessWidget {
                 text: 'Sign In',
 
                 onTap: () {
-                  vm.signIn;
+                  vm.signIn();
+                  /*     Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<ChatCubit>(),
+                        child: const ChatBotScreen(),
+                      ),
+                    ),
+                  );*/
                 },
                 isLoading: vm.isLoading,
               ),
@@ -139,7 +158,12 @@ class _LoginBody extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      // TODO: navigate to Sign Up
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const RegisterScreen(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Sign Up',

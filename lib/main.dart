@@ -5,6 +5,7 @@ import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/features/chat_agent/cubit/chat_cubit.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 import 'package:machinfy_agent/features/chat_agent/services/openai_service.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         create: (context) => ChatCubit(
           openAIService: OpenAIService(apiKey: AppConfig.openAIApiKey),
         ),
-        child: const ChatBotScreen(),
+        child: const SplashScreen(),
       ),
     );
   }
