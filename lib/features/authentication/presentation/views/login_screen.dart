@@ -132,15 +132,6 @@ class _LoginBody extends StatelessWidget {
 
                 onTap: () {
                   vm.signIn();
-                  /*     Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<ChatCubit>(),
-                        child: const ChatBotScreen(),
-                      ),
-                    ),
-                  );*/
                 },
                 isLoading: vm.isLoading,
               ),
