@@ -25,7 +25,6 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // TODO: API / Firebase reset password
       await Future.delayed(const Duration(seconds: 2));
     } finally {
       isLoading = false;

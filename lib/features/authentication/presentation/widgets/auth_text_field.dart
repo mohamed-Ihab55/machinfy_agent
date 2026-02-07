@@ -12,6 +12,7 @@ class AuthTextField extends StatelessWidget {
     this.suffixIcon,
     this.onSuffixTap,
     this.errorText,
+    this.onChanged, // ✅
   });
 
   final String label;
@@ -25,6 +26,9 @@ class AuthTextField extends StatelessWidget {
   final VoidCallback? onSuffixTap;
 
   final String? errorText;
+
+  // ✅ new
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +50,7 @@ class AuthTextField extends StatelessWidget {
             controller: controller,
             keyboardType: keyboardType,
             obscureText: obscureText,
+            onChanged: onChanged, // ✅
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -64,14 +69,12 @@ class AuthTextField extends StatelessWidget {
                 horizontal: 14,
                 vertical: 14,
               ),
-
               prefixIcon: Icon(prefixIcon, size: 20),
               prefixIconColor: const Color(0xFF9CA3AF),
               prefixIconConstraints: const BoxConstraints(
                 minWidth: 46,
                 minHeight: 20,
               ),
-
               suffixIcon: suffixIcon == null
                   ? null
                   : InkWell(
@@ -83,7 +86,6 @@ class AuthTextField extends StatelessWidget {
                       ),
                     ),
               suffixIconColor: const Color(0xFF9CA3AF),
-
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: const BorderSide(color: Color(0xFFE5E7EB)),

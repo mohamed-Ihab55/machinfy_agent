@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/secondary_button.dart';
-import 'package:machinfy_agent/features/authentication/presentation/views/creat_account.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/register_screen.dart';
 import 'package:machinfy_agent/features/authentication/presentation/views/login_screen.dart';
 import 'package:machinfy_agent/features/authentication/models/login_view_model.dart';
 import 'package:provider/provider.dart';

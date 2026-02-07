@@ -47,7 +47,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // TODO: call API / Firebase
       await Future.delayed(const Duration(seconds: 2));
     } finally {
       isLoading = false;

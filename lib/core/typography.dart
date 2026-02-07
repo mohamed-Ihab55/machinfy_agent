@@ -22,7 +22,7 @@ class Style {
     color: kTextColor,
   );
 
-  static const bodySmall = TextStyle(
+  static const bodysmall = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     color: kTextColor,

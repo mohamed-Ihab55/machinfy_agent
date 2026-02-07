@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/edit_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/widgets/profile_info_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -108,7 +109,14 @@ class ProfileScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileEditScreen(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kPrimaryColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
