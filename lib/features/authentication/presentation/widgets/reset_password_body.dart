@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
+
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 
 class ResetPasswordBody extends StatefulWidget {
-  const ResetPasswordBody();
+  const ResetPasswordBody({super.key});
 
   @override
   State<ResetPasswordBody> createState() => _ResetPasswordBodyState();
@@ -33,13 +36,14 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listenWhen: (p, c) => p.message != c.message || p.status != c.status,
       listener: (context, state) {
-        // success/failure messages
-        if (state.message != null &&
-            (state.status == ResetPasswordStatus.success ||
-                state.status == ResetPasswordStatus.failure)) {
+        final msg = state.message;
+        if (msg == null) return;
+
+        if (state.status == ResetPasswordStatus.success ||
+            state.status == ResetPasswordStatus.failure) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message!)));
+          ).showSnackBar(SnackBar(content: Text(msg)));
         }
       },
       builder: (context, state) {
@@ -59,25 +63,17 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
 
                   const SizedBox(height: 90),
 
-                  const Text(
+                  Text(
                     'Reset Password',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF111827),
-                    ),
+                    style: Style.headingMedium,
                     textAlign: TextAlign.center,
                   ),
 
                   const SizedBox(height: 6),
 
-                  const Text(
+                  Text(
                     'Enter your email to receive a password reset link',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF6B7280),
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Style.subTitle,
                     textAlign: TextAlign.center,
                   ),
 
@@ -105,16 +101,7 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
 
                   InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: const Text(
-                      'Back to Sign In',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF2563EB),
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 1.2,
-                      ),
-                    ),
+                    child: Text('Back to Sign In', style: Style.linkUnderline),
                   ),
                 ],
               ),

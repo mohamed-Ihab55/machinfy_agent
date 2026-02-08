@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:machinfy_agent/core/constants.dart';
+
+import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
+
 import 'package:machinfy_agent/features/authentication/cubit/register/register_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/register/register_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
 
 class RegisterBody extends StatefulWidget {
-  const RegisterBody();
+  const RegisterBody({super.key});
 
   @override
   State<RegisterBody> createState() => RegisterBodyState();
@@ -70,22 +74,11 @@ class RegisterBodyState extends State<RegisterBody> {
                   ),
                   const SizedBox(height: 20),
 
-                  const Text(
-                    'Create Account',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF111827),
-                    ),
-                  ),
+                  Text('Create Account', style: Style.headingMedium),
                   const SizedBox(height: 6),
-                  const Text(
+                  Text(
                     'Start your AI learning journey today',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF6B7280),
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Style.subTitle,
                   ),
 
                   const SizedBox(height: 28),
@@ -150,13 +143,13 @@ class RegisterBodyState extends State<RegisterBody> {
                       Checkbox(
                         value: state.acceptTerms,
                         onChanged: cubit.toggleTerms,
-                        activeColor: const Color(0xFF0066CC),
+                        // اللون كان ثابت قبل كده، نخليه من الـ Style/constants لو عندك
+                        activeColor: kPrimaryColor,
                       ),
                       Expanded(
                         child: Text(
                           'I agree to the Terms of Service and Privacy Policy',
-                          style: TextStyle(
-                            fontSize: 12.5,
+                          style: Style.smallGrey.copyWith(
                             color: Colors.black.withOpacity(.6),
                           ),
                         ),
@@ -168,14 +161,7 @@ class RegisterBodyState extends State<RegisterBody> {
                     const SizedBox(height: 6),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        state.termsError!,
-                        style: const TextStyle(
-                          fontSize: 11.5,
-                          height: 1.1,
-                          color: Color(0xFFEF4444),
-                        ),
-                      ),
+                      child: Text(state.termsError!, style: Style.errorSmall),
                     ),
                   ],
 
@@ -192,24 +178,10 @@ class RegisterBodyState extends State<RegisterBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Already have an account? ',
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          color: Color(0xFF6B7280),
-                        ),
-                      ),
+                      Text('Already have an account? ', style: Style.smallGrey),
                       InkWell(
                         onTap: () => Navigator.pop(context),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF0066CC),
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
+                        child: Text('Sign In', style: Style.linkUnderline),
                       ),
                     ],
                   ),

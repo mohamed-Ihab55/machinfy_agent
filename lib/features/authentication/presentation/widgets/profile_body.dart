@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:machinfy_agent/core/typography.dart';
+import 'package:machinfy_agent/core/constants.dart';
+
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/features/authentication/cubit/profile/profile_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/profile/profile_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 
 class ProfileBody extends StatefulWidget {
-  const ProfileBody();
+  const ProfileBody({super.key});
 
   @override
   State<ProfileBody> createState() => ProfileBodyState();
@@ -44,11 +47,12 @@ class ProfileBodyState extends State<ProfileBody> {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listenWhen: (p, c) => p.message != c.message || p.status != c.status,
       listener: (context, state) {
-        if (state.message != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message!)));
-        }
+        final msg = state.message;
+        if (msg == null) return;
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(msg)));
       },
       builder: (context, state) {
         final cubit = context.read<ProfileCubit>();
@@ -68,14 +72,7 @@ class ProfileBodyState extends State<ProfileBody> {
                         icon: const Icon(Icons.arrow_back, size: 22),
                       ),
                       const SizedBox(width: 4),
-                      const Text(
-                        'Profile',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF111827),
-                        ),
-                      ),
+                      Text('Profile', style: Style.appBarTitle),
                     ],
                   ),
                   const Divider(
@@ -95,30 +92,23 @@ class ProfileBodyState extends State<ProfileBody> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF2563EB),
+                              color: kPrimaryColor,
                               width: 2.5,
                             ),
                           ),
                           child: Text(
                             cubit.initials(),
-                            style: const TextStyle(
+                            style: Style.bodyLarge.copyWith(
                               fontSize: 22,
                               fontWeight: FontWeight.w800,
-                              color: Color(0xFF2563EB),
+                              color: kPrimaryColor,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         InkWell(
                           onTap: cubit.changePhoto,
-                          child: const Text(
-                            'Change Photo',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF2563EB),
-                            ),
-                          ),
+                          child: Text('Change Photo', style: Style.link),
                         ),
                       ],
                     ),
@@ -155,32 +145,17 @@ class ProfileBodyState extends State<ProfileBody> {
                   ),
                   const SizedBox(height: 14),
 
-                  const Text(
-                    'Bio',
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF111827),
-                    ),
-                  ),
+                  Text('Bio', style: Style.fieldLabel),
                   const SizedBox(height: 8),
 
                   TextFormField(
                     controller: _bioController,
                     maxLines: 5,
                     onChanged: cubit.bioChanged,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF111827),
-                    ),
+                    style: Style.fieldText,
                     decoration: InputDecoration(
                       hintText: 'Tell us about yourself...',
-                      hintStyle: const TextStyle(
-                        fontSize: 13.5,
-                        color: Color(0xFF9CA3AF),
-                        fontWeight: FontWeight.w500,
-                      ),
+                      hintStyle: Style.fieldHint,
                       filled: true,
                       fillColor: const Color(0xFFF9FAFB),
                       contentPadding: const EdgeInsets.symmetric(
@@ -194,7 +169,7 @@ class ProfileBodyState extends State<ProfileBody> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: const BorderSide(
-                          color: Color(0xFF2563EB),
+                          color: kPrimaryColor,
                           width: 1.2,
                         ),
                       ),
