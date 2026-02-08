@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:machinfy_agent/core/typography.dart';
+import 'package:machinfy_agent/core/constants.dart';
+
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 import 'package:machinfy_agent/features/authentication/cubit/login/login_cubit.dart';
@@ -10,7 +14,7 @@ import 'package:machinfy_agent/features/authentication/presentation/widgets/auth
 import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 
 class LoginBody extends StatefulWidget {
-  const LoginBody();
+  const LoginBody({super.key});
 
   @override
   State<LoginBody> createState() => LoginBodyState();
@@ -68,22 +72,11 @@ class LoginBodyState extends State<LoginBody> {
 
                     const SizedBox(height: 70),
 
-                    const Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF111827),
-                      ),
-                    ),
+                    Text('Welcome Back', style: Style.headingMedium),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'Sign in to continue your learning journey',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF6B7280),
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Style.subTitle,
                       textAlign: TextAlign.center,
                     ),
 
@@ -125,15 +118,9 @@ class LoginBodyState extends State<LoginBody> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
+                          activeColor: kPrimaryColor,
                         ),
-                        const Text(
-                          'Remember me',
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            color: Color(0xFF6B7280),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        Text('Remember me', style: Style.smallGrey),
                         const Spacer(),
                         TextButton(
                           onPressed: () {
@@ -144,14 +131,7 @@ class LoginBodyState extends State<LoginBody> {
                               ),
                             );
                           },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF2563EB),
-                            ),
-                          ),
+                          child: Text('Forgot Password?', style: Style.link),
                         ),
                       ],
                     ),
@@ -169,14 +149,7 @@ class LoginBodyState extends State<LoginBody> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            color: Color(0xFF6B7280),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        Text("Don't have an account? ", style: Style.smallGrey),
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -186,16 +159,7 @@ class LoginBodyState extends State<LoginBody> {
                               ),
                             );
                           },
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: Color(0xFF2563EB),
-                              fontWeight: FontWeight.w800,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1.2,
-                            ),
-                          ),
+                          child: Text('Sign Up', style: Style.linkUnderline),
                         ),
                       ],
                     ),

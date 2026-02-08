@@ -9,4 +9,11 @@ final kTexttErrormsg = Colors.red[500];
 final kBorderTextField = Colors.grey[300];
 const kSendAndCircularIndicator = Colors.white;
 const kLabelText = Color(0xFF757575);
-const kNotificationMsg= Color(0xFFE3F2FD);
+const kNotificationMsg = Color(0xFFE3F2FD);
+const kSubTitleColor = Color(0xFF6B7280);
+const kHintTextColor = Color(0xFF9CA3AF);
+
+const kBorderColor = Color(0xFFE5E7EB);
+const kFieldFillColor = Color(0xFFF9FAFB);
+
+const kErrorColor = Color(0xFFEF4444);
