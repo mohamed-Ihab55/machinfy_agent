@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_state.dart';
-import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
+
+import 'reset_password_header.dart';
+import 'reset_password_form.dart';
+import 'back_to_signin_link.dart';
 
 class ResetPasswordBody extends StatefulWidget {
   const ResetPasswordBody({super.key});
@@ -31,21 +33,21 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
     super.dispose();
   }
 
+  void _handleState(BuildContext context, ResetPasswordState state) {
+    final msg = state.message;
+    if (msg == null) return;
+
+    if (state.status == ResetPasswordStatus.success ||
+        state.status == ResetPasswordStatus.failure) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listenWhen: (p, c) => p.message != c.message || p.status != c.status,
-      listener: (context, state) {
-        final msg = state.message;
-        if (msg == null) return;
-
-        if (state.status == ResetPasswordStatus.success ||
-            state.status == ResetPasswordStatus.failure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
-        }
-      },
+      listener: _handleState,
       builder: (context, state) {
         final cubit = context.read<ResetPasswordCubit>();
 
@@ -56,37 +58,21 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: TextButtonIcon(),
                   ),
 
                   const SizedBox(height: 90),
 
-                  Text(
-                    'Reset Password',
-                    style: Style.headingMedium,
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 6),
-
-                  Text(
-                    'Enter your email to receive a password reset link',
-                    style: Style.subTitle,
-                    textAlign: TextAlign.center,
-                  ),
+                  const ResetPasswordHeader(),
 
                   const SizedBox(height: 28),
 
-                  AuthTextField(
-                    label: 'Email Address',
-                    hint: 'name@company.com',
-                    controller: _emailController,
-                    prefixIcon: Icons.mail_outline,
-                    keyboardType: TextInputType.emailAddress,
-                    errorText: state.emailError,
-                    onChanged: cubit.emailChanged,
+                  ResetPasswordForm(
+                    emailController: _emailController,
+                    emailError: state.emailError,
+                    onEmailChanged: cubit.emailChanged,
                   ),
 
                   const SizedBox(height: 18),
@@ -94,15 +80,12 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
                   PrimaryButton(
                     text: 'Send Reset Link',
                     isLoading: state.isLoading,
-                    onTap: () => cubit.sendResetLink(),
+                    onTap: cubit.sendResetLink,
                   ),
 
                   const SizedBox(height: 18),
 
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Text('Back to Sign In', style: Style.linkUnderline),
-                  ),
+                  const BackToSignInLink(),
                 ],
               ),
             ),
