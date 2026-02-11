@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:machinfy_agent/core/constants.dart';
-
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/text_button_icon.dart';
@@ -27,6 +26,13 @@ class RegisterBodyState extends State<RegisterBody> {
   @override
   void initState() {
     super.initState();
+
+    // ✅ Reset مرة واحدة فقط (مش جوه build)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<RegisterCubit>().reset();
+    });
+
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -143,7 +149,6 @@ class RegisterBodyState extends State<RegisterBody> {
                       Checkbox(
                         value: state.acceptTerms,
                         onChanged: cubit.toggleTerms,
-                        // اللون كان ثابت قبل كده، نخليه من الـ Style/constants لو عندك
                         activeColor: kPrimaryColor,
                       ),
                       Expanded(
@@ -170,7 +175,13 @@ class RegisterBodyState extends State<RegisterBody> {
                   PrimaryButton(
                     text: 'Create Account',
                     isLoading: state.isLoading,
-                    onTap: () => cubit.createAccount(),
+                    onTap: () {
+                      // ✅ يمنع الضغط أثناء اللودينج
+                      if (state.isLoading) return;
+
+                      // الكيوبت هيقرأ القيم من state (اللي بتتحدث من onChanged)
+                      cubit.createAccount();
+                    },
                   ),
 
                   const SizedBox(height: 18),
