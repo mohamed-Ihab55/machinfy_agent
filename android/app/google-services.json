@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "199131708682",
+    "project_id": "machinfy-agent",
+    "storage_bucket": "machinfy-agent.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199131708682:android:b0426c0215f6b64f44cef3",
+        "android_client_info": {
+          "package_name": "com.example.machinfy_agent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm62Fa7VjQe4BVhubCVHDDtvrw3yQfQjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
