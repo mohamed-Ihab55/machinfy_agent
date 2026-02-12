@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:machinfy_agent/core/utils/primary_button.dart';
-import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/reset_password/reset_password_state.dart';
@@ -57,11 +56,6 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButtonIcon(),
-                  ),
-
                   const SizedBox(height: 90),
 
                   const ResetPasswordHeader(),

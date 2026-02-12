@@ -92,12 +92,6 @@ class ProfileScreen extends StatelessWidget {
                     value: '+20 123 456 7890',
                     onTap: () {},
                   ),
-                  ProfileInfoTile(
-                    icon: Icons.location_on_outlined,
-                    label: 'Location',
-                    value: 'Cairo, Egypt',
-                    onTap: () {},
-                  ),
                 ],
               ),
             ),

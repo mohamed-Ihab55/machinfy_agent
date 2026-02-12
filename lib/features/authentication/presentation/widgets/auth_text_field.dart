@@ -46,12 +46,12 @@ class AuthTextField extends StatelessWidget {
             keyboardType: keyboardType,
             obscureText: obscureText,
             onChanged: onChanged,
-            style: Style.fieldText,
+            style: Theme.of(context).textTheme.bodyLarge,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: hintStyle ?? Style.fieldHint,
               filled: true,
-              fillColor: kFieldFillColor,
+              fillColor: Colors.transparent,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
                 vertical: 14,

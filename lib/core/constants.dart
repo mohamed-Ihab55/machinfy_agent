@@ -18,12 +18,9 @@ const kFieldFillColor = Color(0xFFF9FAFB);
 
 const kErrorColor = Color(0xFFEF4444);
 
-// ============ Dark Theme Colors ============
-/// Main dark background for scaffolds and app bars
+
 const kDarkBackgroundColor = Color(0xFF020617);
 
-/// Default surface/container color in dark mode (primary with opacity)
-const kDarkSurfaceColor = Color(0x290066CC); // kPrimaryColor with ~16% opacity
+const kDarkSurfaceColor = Color(0x290066CC);
 
-/// Dialog background in dark mode (slightly stronger surface)
-const kDarkDialogColor = Color(0x330066CC); // kPrimaryColor with ~20% opacity
+const kDarkDialogColor = Color(0x330066CC); 

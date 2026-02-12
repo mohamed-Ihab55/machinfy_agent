@@ -103,10 +103,9 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                 color: Theme.of(context).colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.08),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.08),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),
@@ -119,9 +118,12 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                     children: [
                       Expanded(
                         child: TextField(
+                          style: Theme.of(context).textTheme.bodyLarge,
                           controller: _messageController,
                           decoration: InputDecoration(
                             hintText: 'Type your message...',
+                            hintStyle: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.grey[600]),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(24),
                               borderSide: BorderSide(color: kBorderTextField!),

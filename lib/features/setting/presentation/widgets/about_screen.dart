@@ -49,7 +49,9 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     'Machinfy Agent is your intelligent course advisor powered by advanced AI technology. We help you explore AI and Data Science programs, get personalized recommendations, and guide you through your learning journey.',
-                    style: Style.bodysmall.copyWith(color: kSubTitleColor),
+                    style: Style.bodysmall.copyWith(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                   ),
                   const SizedBox(height: 30),
 
@@ -59,6 +61,7 @@ class AboutScreen extends StatelessWidget {
                     style: Style.bodyLarge.copyWith(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -100,6 +103,7 @@ class AboutScreen extends StatelessWidget {
                       _buildInfoRow('Release Date', 'January 2026', context),
                       _buildInfoRow('Platform', 'Android & iOS', context),
                     ],
+                    context: context,
                   ),
 
                   const SizedBox(height: 16),
@@ -113,6 +117,7 @@ class AboutScreen extends StatelessWidget {
                       _buildInfoRow('Email', 'support@machinfy.com', context),
                       _buildInfoRow('Phone', '+20 123 456 7890', context),
                     ],
+                    context: context,
                   ),
 
                   const SizedBox(height: 30),
@@ -151,10 +156,10 @@ class AboutScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: kTextColor,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -162,7 +167,9 @@ class AboutScreen extends StatelessWidget {
                   description,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -177,11 +184,12 @@ class AboutScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required List<Widget> children,
+    required BuildContext context,
   }) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: kBorderColor.withValues(alpha: 0.7),
+        color: Theme.of(context).colorScheme.tertiary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -211,15 +219,19 @@ class AboutScreen extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 14,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: kTextColor,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
         ],

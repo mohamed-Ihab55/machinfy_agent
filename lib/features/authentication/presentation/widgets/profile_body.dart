@@ -156,7 +156,7 @@ class ProfileBodyState extends State<ProfileBody> {
                       hintText: 'Tell us about yourself...',
                       hintStyle: Style.fieldHint,
                       filled: true,
-                      fillColor: const Color(0xFFF9FAFB),
+                      fillColor: Colors.transparent,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 14,
                         vertical: 14,

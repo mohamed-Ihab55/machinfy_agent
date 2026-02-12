@@ -13,15 +13,9 @@ class Style {
   );
 
   // ================= BODY =================
-  static const bodyLarge = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-  );
+  static const bodyLarge = TextStyle(fontSize: 18, fontWeight: FontWeight.w600);
 
-  static const bodysmall = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-  );
+  static const bodysmall = TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
 
   // ================= SUBTITLES =================
   static const subTitle = TextStyle(
@@ -71,6 +65,7 @@ class Style {
   static const fieldText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
+    color: Colors.black,
   );
 
   static const fieldHint = TextStyle(

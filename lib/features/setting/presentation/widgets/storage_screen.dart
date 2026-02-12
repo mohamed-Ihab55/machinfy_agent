@@ -139,10 +139,14 @@ class _StorageScreenState extends State<StorageScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surface.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(
@@ -150,18 +154,15 @@ class _StorageScreenState extends State<StorageScreen> {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.lightbulb_outline,
-                          color: kPrimaryColor,
+                          color: Theme.of(context).iconTheme.color,
                           size: 24,
                         ),
                         const SizedBox(width: 12),
                         Text(
                           'Storage Tips',
-                          style: Style.bodysmall.copyWith(
-                            color: kPrimaryColor,
-                            fontSize: 18,
-                          ),
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ],
                     ),
@@ -192,7 +193,7 @@ class _StorageScreenState extends State<StorageScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F5F5),
+          color: Theme.of(context).colorScheme.tertiary,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -232,22 +233,9 @@ class _StorageScreenState extends State<StorageScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '• ',
-            style: TextStyle(
-              fontSize: 14,
-              color: kPrimaryColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Text('• ', style: Theme.of(context).textTheme.headlineSmall),
           Expanded(
-            child: Text(
-              text,
-              style: Style.bodysmall.copyWith(
-                fontSize: 14,
-                color: kSubTitleColor,
-              ),
-            ),
+            child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
       ),

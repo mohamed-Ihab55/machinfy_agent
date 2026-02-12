@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:machinfy_agent/core/utils/primary_button.dart';
-import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 
 import 'package:machinfy_agent/features/authentication/cubit/login/login_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/login/login_state.dart';
@@ -66,12 +65,7 @@ class _LoginBodyState extends State<LoginBody> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButtonIcon(),
-                    ),
-                    const SizedBox(height: 70),
-
+                    const SizedBox(height: 200),
                     const LoginHeader(),
                     const SizedBox(height: 28),
 

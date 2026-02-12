@@ -43,10 +43,7 @@ class WelcomeScreen extends StatelessWidget {
 
               const Text(
                 'Machinfy Academy',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
                 textAlign: TextAlign.center,
               ),
 
@@ -77,12 +74,12 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const Spacer(flex: 3), // 👈 يزق الأزرار لتحت
-              // 🔹 الأزرار (نفس مكان الصورة)
+              const Spacer(flex: 3),
+              
               PrimaryButton(
                 text: 'Sign In',
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
@@ -93,7 +90,7 @@ class WelcomeScreen extends StatelessWidget {
               SecondaryButton(
                 text: 'Create Account',
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );

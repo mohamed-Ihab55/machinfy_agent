@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
-import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 
 import 'package:machinfy_agent/features/authentication/cubit/register/register_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/register/register_state.dart';
@@ -27,7 +26,6 @@ class RegisterBodyState extends State<RegisterBody> {
   void initState() {
     super.initState();
 
-    // ✅ Reset مرة واحدة فقط (مش جوه build)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<RegisterCubit>().reset();
@@ -73,11 +71,7 @@ class RegisterBodyState extends State<RegisterBody> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButtonIcon(),
-                  ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 100),
 
                   Text('Create Account', style: Style.headingMedium),
                   const SizedBox(height: 6),
@@ -154,10 +148,9 @@ class RegisterBodyState extends State<RegisterBody> {
                         child: Text(
                           'I agree to the Terms of Service and Privacy Policy',
                           style: Style.smallGrey.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.7),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.7),
                           ),
                         ),
                       ),

@@ -5,11 +5,29 @@ class AppTheme {
   static ThemeData get lightTheme {
     final base = ThemeData.light();
     return base.copyWith(
+      textTheme: base.textTheme.copyWith(
+        bodyLarge: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: kTextColor,
+        ),
+        bodyMedium: const TextStyle(fontSize: 14, color: kTextColor),
+        headlineMedium: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: kPrimaryColor,
+        ),
+      ),
+      iconTheme: base.iconTheme.copyWith(color: kPrimaryColor),
       scaffoldBackgroundColor: kBackgroundColor,
       primaryColor: kPrimaryColor,
       colorScheme: base.colorScheme.copyWith(
         primary: kPrimaryColor,
         secondary: kSecondaryColor,
+        tertiary: kBorderTextField!.withValues(alpha: 0.3),
+
+        surface: Colors.blueGrey[50],
+        onSurface: kTextColor,
         brightness: Brightness.light,
       ),
       appBarTheme: const AppBarTheme(
@@ -23,12 +41,26 @@ class AppTheme {
   static ThemeData get darkTheme {
     final base = ThemeData.dark();
     return base.copyWith(
+      textTheme: base.textTheme.copyWith(
+        bodyLarge: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+        bodyMedium: const TextStyle(fontSize: 14, color: Colors.white70),
+        headlineMedium: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+      ),
       // Deep navy background for a professional dark look
       scaffoldBackgroundColor: kDarkBackgroundColor,
       primaryColor: kPrimaryColor,
       colorScheme: base.colorScheme.copyWith(
-        primary: kPrimaryColor,
+        primary: kPrimaryColor.withValues(alpha: 0.2),
         secondary: kSecondaryColor,
+        tertiary: kBorderTextField!.withValues(alpha: 0.3),
         brightness: Brightness.dark,
         surface: kDarkSurfaceColor,
         onSurface: Colors.white,
@@ -48,16 +80,10 @@ class AppTheme {
         iconColor: Colors.white70,
         textColor: Colors.white,
       ),
-      textTheme: base.textTheme.apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
-      ),
       inputDecorationTheme: base.inputDecorationTheme.copyWith(
         filled: true,
         fillColor: kDarkSurfaceColor,
-        hintStyle: base.textTheme.bodyMedium?.copyWith(
-          color: Colors.white70,
-        ),
+        hintStyle: base.textTheme.bodyMedium?.copyWith(color: Colors.black),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
@@ -67,10 +93,7 @@ class AppTheme {
           borderSide: const BorderSide(color: kPrimaryColor, width: 1.4),
         ),
       ),
-      dialogTheme: DialogThemeData(
-        backgroundColor: kDarkDialogColor,
-      ),
+      dialogTheme: DialogThemeData(backgroundColor: kDarkDialogColor),
     );
   }
 }
-

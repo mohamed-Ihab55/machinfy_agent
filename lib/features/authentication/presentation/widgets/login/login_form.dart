@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machinfy_agent/core/typography.dart';
 
 import 'package:machinfy_agent/features/authentication/cubit/login/login_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
@@ -28,7 +29,8 @@ class LoginForm extends StatelessWidget {
       children: [
         AuthTextField(
           label: 'Email Address',
-          hint: 'name@company.com',
+          hint: 'name@gmail.com',
+          hintStyle: Style.fieldHint,
           controller: emailController,
           prefixIcon: Icons.mail_outline,
           keyboardType: TextInputType.emailAddress,
@@ -39,6 +41,7 @@ class LoginForm extends StatelessWidget {
         AuthTextField(
           label: 'Password',
           hint: 'Enter your password',
+          hintStyle: Style.fieldHint,
           controller: passwordController,
           prefixIcon: Icons.lock_outline,
           obscureText: state.isPasswordHidden,
