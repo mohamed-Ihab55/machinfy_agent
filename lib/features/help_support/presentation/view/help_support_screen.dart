@@ -75,18 +75,6 @@ class HelpSupportScreen extends StatelessWidget {
             subtitle: 'Read our detailed guides',
             onTap: () {},
           ),
-          HelpTile(
-            icon: Icons.video_library_outlined,
-            title: 'Video Tutorials',
-            subtitle: 'Watch step-by-step tutorials',
-            onTap: () {},
-          ),
-          HelpTile(
-            icon: Icons.forum_outlined,
-            title: 'Community Forum',
-            subtitle: 'Connect with other learners',
-            onTap: () {},
-          ),
 
           const SizedBox(height: 30),
           const SectionTitle(title: 'Contact'),
@@ -103,13 +91,6 @@ class HelpSupportScreen extends StatelessWidget {
             subtitle: '+20 123 456 7890',
             onTap: () {},
           ),
-          HelpTile(
-            icon: Icons.chat_bubble_outline,
-            title: 'Live Chat',
-            subtitle: 'Chat with our support team',
-            onTap: () {},
-          ),
-
           const SizedBox(height: 30),
           const SectionTitle(title: 'Feedback'),
 
@@ -117,18 +98,6 @@ class HelpSupportScreen extends StatelessWidget {
             icon: Icons.star_outline,
             title: 'Rate the App',
             subtitle: 'Share your experience',
-            onTap: () {},
-          ),
-          HelpTile(
-            icon: Icons.bug_report_outlined,
-            title: 'Report a Bug',
-            subtitle: 'Help us improve',
-            onTap: () {},
-          ),
-          HelpTile(
-            icon: Icons.lightbulb_outline,
-            title: 'Suggest a Feature',
-            subtitle: 'Share your ideas',
             onTap: () {},
           ),
         ],
