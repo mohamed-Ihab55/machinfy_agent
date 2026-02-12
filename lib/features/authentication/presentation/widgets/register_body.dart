@@ -8,7 +8,7 @@ import 'package:machinfy_agent/core/utils/text_button_icon.dart';
 import 'package:machinfy_agent/features/authentication/cubit/register/register_cubit.dart';
 import 'package:machinfy_agent/features/authentication/cubit/register/register_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
-import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 
 class RegisterBody extends StatefulWidget {
   const RegisterBody({super.key});
@@ -56,7 +56,7 @@ class RegisterBodyState extends State<RegisterBody> {
         if (state.status == RegisterStatus.success) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+            MaterialPageRoute(builder: (_) => const ChatBotScreen()),
           );
         } else if (state.status == RegisterStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(

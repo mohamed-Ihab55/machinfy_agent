@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/assets.dart';
 import 'package:machinfy_agent/core/typography.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -10,6 +11,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final name = (user?.displayName?.trim().isNotEmpty ?? false)
+        ? user!.displayName!.trim()
+        : 'User';
     return AppBar(
       title: Row(
         spacing: 10,
@@ -22,9 +27,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text('Course Advisor', style: Style.bodyLarge),
-              Text('Welcome, Mohamed', style: Style.bodysmall),
+              Text('Welcome, $name', style: Style.bodysmall),
             ],
           ),
         ],
