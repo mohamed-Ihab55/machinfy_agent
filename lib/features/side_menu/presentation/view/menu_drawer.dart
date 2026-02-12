@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/help_support/presentation/view/help_support_screen.dart';
-import 'package:machinfy_agent/features/notification/presentation/view/notifications_screen.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/privacy_security_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
 import 'package:machinfy_agent/features/setting/presentation/view/settings_screen.dart';
@@ -115,19 +114,7 @@ class MenuDrawer extends StatelessWidget {
                       );
                     },
                   ),
-                  MenuItemTile(
-                    icon: Icons.notifications_outlined,
-                    title: 'Notifications',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationsScreen(),
-                        ),
-                      );
-                    },
-                  ),
+
                   MenuItemTile(
                     icon: Icons.shield_outlined,
                     title: 'Privacy & Security',

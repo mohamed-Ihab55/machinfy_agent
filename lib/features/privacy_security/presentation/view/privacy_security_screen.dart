@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/reset_password.dart';
 import 'package:machinfy_agent/features/setting/presentation/widgets/section_title.dart';
 import 'package:machinfy_agent/features/setting/presentation/widgets/setting_tile.dart';
 import 'package:machinfy_agent/features/setting/presentation/widgets/switch_setting_tile.dart';
@@ -9,6 +10,7 @@ class PrivacySecurityScreen extends StatefulWidget {
   @override
   State<PrivacySecurityScreen> createState() => _PrivacySecurityScreenState();
 }
+
 class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
   bool twoFactorAuth = false;
   bool biometricLogin = true;
@@ -44,39 +46,14 @@ class _PrivacySecurityScreenState extends State<PrivacySecurityScreen> {
             icon: Icons.vpn_key_outlined,
             title: 'Change Password',
             subtitle: 'Update your password',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+              );
+            },
           ),
 
-          const SizedBox(height: 30),
-          const SectionTitle(title: 'Privacy'),
-          SwitchSettingTile(
-            icon: Icons.visibility_outlined,
-            title: 'Activity Status',
-            subtitle: 'Show when you\'re active',
-            value: activityStatus,
-            onChanged: (value) => setState(() => activityStatus = value),
-          ),
-          SettingTile(
-            icon: Icons.block_outlined,
-            title: 'Blocked Users',
-            subtitle: 'Manage blocked users',
-            onTap: () {},
-          ),
-          SettingTile(
-            icon: Icons.history_outlined,
-            title: 'Login History',
-            subtitle: 'View recent login activity',
-            onTap: () {},
-          ),
-
-          const SizedBox(height: 30),
-          const SectionTitle(title: 'Data'),
-          SettingTile(
-            icon: Icons.download_outlined,
-            title: 'Download Your Data',
-            subtitle: 'Get a copy of your data',
-            onTap: () {},
-          ),
           SettingTile(
             icon: Icons.delete_outline,
             title: 'Delete Account',

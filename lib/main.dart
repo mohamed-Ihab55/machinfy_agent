@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/theme/app_theme.dart';
 import 'package:machinfy_agent/core/theme/theme_provider.dart';
 import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
