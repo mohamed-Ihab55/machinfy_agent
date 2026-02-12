@@ -25,7 +25,6 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<LoginViewModel>();
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -45,7 +44,6 @@ class WelcomeScreen extends StatelessWidget {
               const Text(
                 'Machinfy Academy',
                 style: TextStyle(
-                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
                 ),

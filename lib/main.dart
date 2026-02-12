@@ -1,13 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
+import 'package:machinfy_agent/core/theme/app_theme.dart';
+import 'package:machinfy_agent/core/theme/theme_provider.dart';
 import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 import 'package:machinfy_agent/firebase_options.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,14 +24,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
     return MaterialApp(
-      theme: ThemeData().copyWith(
-        scaffoldBackgroundColor: kBackgroundColor,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: kBackgroundColor,
-          elevation: 0,
-        ),
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
