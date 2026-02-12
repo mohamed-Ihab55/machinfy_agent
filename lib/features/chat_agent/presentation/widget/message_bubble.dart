@@ -32,7 +32,9 @@ class MessageBubble extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: isUser ? kPrimaryColor : Colors.grey[200],
+                color: isUser
+                    ? kPrimaryColor
+                    : Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
                   topRight: const Radius.circular(20),
@@ -43,7 +45,9 @@ class MessageBubble extends StatelessWidget {
               child: Text(
                 message.content,
                 style: Style.bodysmall.copyWith(
-                  color: isUser ? Colors.white : kTextColor,
+                  color: isUser
+                      ? Colors.white
+                      : Theme.of(context).colorScheme.onSurface,
                   height: 1.5,
                 ),
               ),

@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/core/constants.dart';
 
 class Style {
   // ================= HEADINGS =================
   static const headingLarge = TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.bold,
-    color: kTextColor,
   );
 
   static const headingMedium = TextStyle(
     fontSize: 26,
     fontWeight: FontWeight.w800,
-    color: kTextColor,
   );
 
   // ================= BODY =================
   static const bodyLarge = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: kTextColor,
   );
 
   static const bodysmall = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: kTextColor,
   );
 
   // ================= SUBTITLES =================
@@ -66,19 +61,16 @@ class Style {
   static const appBarTitle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: kTextColor,
   );
   // ================= FORMS =================
   static const fieldLabel = TextStyle(
     fontSize: 12.5,
     fontWeight: FontWeight.w600,
-    color: kTextColor,
   );
 
   static const fieldText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: kTextColor,
   );
 
   static const fieldHint = TextStyle(

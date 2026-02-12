@@ -60,7 +60,6 @@ class _LoginBodyState extends State<LoginBody> {
         final cubit = context.read<LoginCubit>();
 
         return Scaffold(
-          backgroundColor: Colors.white,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool _isDarkMode = false;
+  // Start the app in dark mode by default
+  bool _isDarkMode = true;
 
   bool get isDarkMode => _isDarkMode;
 

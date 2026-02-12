@@ -13,7 +13,7 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
         child: Column(
           children: [
@@ -25,7 +25,7 @@ class MenuDrawer extends StatelessWidget {
                 children: [
                   const Text('Menu', style: Style.headingMedium),
                   IconButton(
-                    icon: const Icon(Icons.close, color: kLabelText),
+                    icon: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -37,7 +37,8 @@ class MenuDrawer extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: kLabelText.withValues(alpha: 0.1),
+                color:
+                    Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -68,10 +69,15 @@ class MenuDrawer extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           'mehab1638@gmail.com',
-                          style: Style.bodysmall.copyWith(color: kLabelText),
+                          style: Style.bodysmall.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.7),
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -155,8 +161,11 @@ class MenuDrawer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: kBackgroundColor.withValues(alpha: 0.5),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surface
+                          .withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(

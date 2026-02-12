@@ -15,10 +15,12 @@ class AuthTextField extends StatelessWidget {
     this.onSuffixTap,
     this.errorText,
     this.onChanged,
+    this.hintStyle,
   });
 
   final String label;
   final String hint;
+  final TextStyle? hintStyle;
   final TextEditingController controller;
   final IconData prefixIcon;
   final TextInputType? keyboardType;
@@ -47,7 +49,7 @@ class AuthTextField extends StatelessWidget {
             style: Style.fieldText,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: Style.fieldHint,
+              hintStyle: hintStyle ?? Style.fieldHint,
               filled: true,
               fillColor: kFieldFillColor,
               contentPadding: const EdgeInsets.symmetric(

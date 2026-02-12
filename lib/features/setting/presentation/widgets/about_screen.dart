@@ -9,7 +9,6 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('About'), centerTitle: true),
       body: SingleChildScrollView(
         child: Column(
@@ -68,21 +67,25 @@ class AboutScreen extends StatelessWidget {
                     icon: Icons.smart_toy_outlined,
                     title: 'AI-Powered Assistant',
                     description: 'Get intelligent course recommendations',
+                    context: context,
                   ),
                   _buildFeatureItem(
                     icon: Icons.school_outlined,
                     title: 'Course Explorer',
                     description: 'Browse comprehensive course catalog',
+                    context: context,
                   ),
                   _buildFeatureItem(
                     icon: Icons.person_outline,
                     title: 'Personalized Learning',
                     description: 'Tailored learning paths just for you',
+                    context: context,
                   ),
                   _buildFeatureItem(
                     icon: Icons.support_agent_outlined,
                     title: '24/7 Support',
                     description: 'Always here to help you succeed',
+                    context: context,
                   ),
 
                   const SizedBox(height: 30),
@@ -92,10 +95,10 @@ class AboutScreen extends StatelessWidget {
                     icon: Icons.info_outline,
                     title: 'Version Information',
                     children: [
-                      _buildInfoRow('Version', '1.0.0'),
-                      _buildInfoRow('Build Number', '100'),
-                      _buildInfoRow('Release Date', 'January 2026'),
-                      _buildInfoRow('Platform', 'Android & iOS'),
+                      _buildInfoRow('Version', '1.0.0', context),
+                      _buildInfoRow('Build Number', '100', context),
+                      _buildInfoRow('Release Date', 'January 2026', context),
+                      _buildInfoRow('Platform', 'Android & iOS', context),
                     ],
                   ),
 
@@ -105,10 +108,10 @@ class AboutScreen extends StatelessWidget {
                     icon: Icons.business_outlined,
                     title: 'Company Information',
                     children: [
-                      _buildInfoRow('Company', 'Machinfy Academy'),
-                      _buildInfoRow('Website', 'www.machinfy.com'),
-                      _buildInfoRow('Email', 'support@machinfy.com'),
-                      _buildInfoRow('Phone', '+20 123 456 7890'),
+                      _buildInfoRow('Company', 'Machinfy Academy', context),
+                      _buildInfoRow('Website', 'www.machinfy.com', context),
+                      _buildInfoRow('Email', 'support@machinfy.com', context),
+                      _buildInfoRow('Phone', '+20 123 456 7890', context),
                     ],
                   ),
 
@@ -126,6 +129,7 @@ class AboutScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required String description,
+    required BuildContext context,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -156,7 +160,10 @@ class AboutScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 14, color: kSubTitleColor),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
               ],
             ),
@@ -194,13 +201,19 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(String label, String value, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 14, color: kSubTitleColor)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
+            ),
+          ),
           Text(
             value,
             style: const TextStyle(

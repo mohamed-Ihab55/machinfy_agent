@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 
 class MenuItemTile extends StatelessWidget {
@@ -23,17 +22,34 @@ class MenuItemTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         child: Row(
           children: [
-            Icon(icon, color: kLabelText, size: 24),
+            Icon(
+              icon,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withOpacity(0.7),
+              size: 24,
+            ),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 title,
                 style: Style.bodyLarge.copyWith(
-                  color: kTextColor.withValues(alpha: 0.7),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withOpacity(0.9),
                 ),
               ),
             ),
-            const Icon(Icons.chevron_right, color: kLabelText, size: 24),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withOpacity(0.5),
+              size: 24,
+            ),
           ],
         ),
       ),

@@ -100,10 +100,13 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
             // Input area
             Container(
               decoration: BoxDecoration(
-                color: kSendAndCircularIndicator,
+                color: Theme.of(context).colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.08),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),
@@ -119,9 +122,6 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                           controller: _messageController,
                           decoration: InputDecoration(
                             hintText: 'Type your message...',
-                            hintStyle: Style.bodysmall.copyWith(
-                              color: Colors.grey[400],
-                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(24),
                               borderSide: BorderSide(color: kBorderTextField!),
@@ -142,7 +142,7 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                               vertical: 12,
                             ),
                             filled: true,
-                            fillColor: Colors.grey[50],
+                            fillColor: Theme.of(context).colorScheme.surface,
                           ),
                           maxLines: null,
                           textInputAction: TextInputAction.send,

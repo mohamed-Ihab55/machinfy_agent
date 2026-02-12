@@ -58,7 +58,6 @@ class ProfileBodyState extends State<ProfileBody> {
         final cubit = context.read<ProfileCubit>();
 
         return Scaffold(
-          backgroundColor: Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),

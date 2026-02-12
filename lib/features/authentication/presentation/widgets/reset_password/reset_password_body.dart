@@ -52,7 +52,6 @@ class _ResetPasswordBodyState extends State<ResetPasswordBody> {
         final cubit = context.read<ResetPasswordCubit>();
 
         return Scaffold(
-          backgroundColor: Colors.white,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),

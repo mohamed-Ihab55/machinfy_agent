@@ -28,7 +28,7 @@ class _StorageScreenState extends State<StorageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Storage'),
         centerTitle: true,
@@ -139,9 +139,11 @@ class _StorageScreenState extends State<StorageScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.shade100),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

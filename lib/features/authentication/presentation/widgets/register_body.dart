@@ -68,7 +68,6 @@ class RegisterBodyState extends State<RegisterBody> {
         final cubit = context.read<RegisterCubit>();
 
         return Scaffold(
-          backgroundColor: Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -155,7 +154,10 @@ class RegisterBodyState extends State<RegisterBody> {
                         child: Text(
                           'I agree to the Terms of Service and Privacy Policy',
                           style: Style.smallGrey.copyWith(
-                            color: Colors.black.withOpacity(.6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.7),
                           ),
                         ),
                       ),
