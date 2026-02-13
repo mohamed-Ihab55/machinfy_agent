@@ -57,6 +57,12 @@ class _LoginBodyState extends State<LoginBody> {
       listener: _handleState,
       builder: (context, state) {
         final cubit = context.read<LoginCubit>();
+        if (_emailController.text != state.email) {
+          _emailController.text = state.email;
+          _emailController.selection = TextSelection.fromPosition(
+            TextPosition(offset: _emailController.text.length),
+          );
+        }
 
         return Scaffold(
           body: SafeArea(

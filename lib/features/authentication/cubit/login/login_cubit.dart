@@ -1,9 +1,24 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
+import 'package:machinfy_agent/features/authentication/data/remember_me_storage.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(const LoginState());
+  LoginCubit() : super(const LoginState()) {
+    _loadRememberPrefs();
+  }
+  Future<void> _loadRememberPrefs() async {
+    final remember = await RememberMeStorage.getRememberMe();
+    final savedEmail = await RememberMeStorage.getRememberEmail();
+
+    emit(
+      state.copyWith(
+        rememberMe: remember,
+        // لو remember شغال وفيه ايميل محفوظ -> حطه في state.email
+        email: (remember && savedEmail != null) ? savedEmail : state.email,
+      ),
+    );
+  }
 
   // بدل controllers: UI تبعت القيم هنا
   void emailChanged(String value) {
@@ -16,8 +31,17 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  void toggleRememberMe(bool? value) {
-    emit(state.copyWith(rememberMe: value ?? false));
+  Future<void> toggleRememberMe(bool? value) async {
+    final v = value ?? false;
+
+    emit(state.copyWith(rememberMe: v));
+
+    await RememberMeStorage.setRememberMe(v);
+
+    // لو المستخدم قفل Remember me -> امسح الايميل المحفوظ
+    if (!v) {
+      await RememberMeStorage.clearRememberEmail();
+    }
   }
 
   void togglePasswordVisibility() {
@@ -31,7 +55,6 @@ class LoginCubit extends Cubit<LoginState> {
     String? emailError;
     String? passwordError;
 
-    // نفس validation بتاع ViewModel
     if (email.isEmpty || !email.contains('@')) {
       emailError = 'Please enter a valid email';
     }
@@ -50,8 +73,15 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: LoginStatus.loading, clearMessage: true));
 
     try {
-      // نفس Future.delayed اللي عندك (placeholder)
+      // placeholder
       await Future.delayed(const Duration(seconds: 2));
+
+      // ✅ احفظ/امسح الايميل حسب rememberMe (بعد نجاح تسجيل الدخول)
+      if (state.rememberMe) {
+        await RememberMeStorage.setRememberEmail(state.email.trim());
+      } else {
+        await RememberMeStorage.clearRememberEmail();
+      }
 
       emit(state.copyWith(status: LoginStatus.success));
     } catch (e) {
@@ -62,14 +92,11 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
     } finally {
-      // لو نجح مش محتاج نرجع idle، خليه success عشان listener ينقل
-      // لو فشل، نرجّعه idle بعد عرض الرسالة (اختياري)
       if (state.status == LoginStatus.failure) {
         emit(state.copyWith(status: LoginStatus.idle));
       }
     }
   }
 
-  // مفيد لو عايز Reset للفورم
   void reset() => emit(const LoginState());
 }
