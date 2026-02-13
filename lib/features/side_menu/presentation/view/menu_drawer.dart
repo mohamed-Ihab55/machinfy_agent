@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
@@ -6,6 +7,7 @@ import 'package:machinfy_agent/features/privacy_security/presentation/view/priva
 import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
 import 'package:machinfy_agent/features/setting/presentation/view/settings_screen.dart';
 import 'package:machinfy_agent/features/side_menu/presentation/widgets/menu_item_tile.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
@@ -37,8 +39,9 @@ class MenuDrawer extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color:
-                    Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withOpacity(0.06),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -73,10 +76,9 @@ class MenuDrawer extends StatelessWidget {
                         Text(
                           'mehab1638@gmail.com',
                           style: Style.bodysmall.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.7),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.7),
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -161,11 +163,10 @@ class MenuDrawer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .surface
-                          .withOpacity(0.8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surface.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -194,19 +195,35 @@ class MenuDrawer extends StatelessWidget {
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Log Out'),
         content: const Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+
               Navigator.pop(context);
-              Navigator.pop(context);
-              // Perform logout
+
+              try {
+                await FirebaseAuth.instance.signOut();
+
+                if (!context.mounted) return;
+
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const SplashScreen()),
+                  (route) => false,
+                );
+              } catch (e) {
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Logout failed: $e')));
+              }
             },
             child: const Text(
               'Log Out',
