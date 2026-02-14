@@ -171,10 +171,7 @@ class RegisterBodyState extends State<RegisterBody> {
                     text: 'Create Account',
                     isLoading: state.isLoading,
                     onTap: () {
-                      // ✅ يمنع الضغط أثناء اللودينج
                       if (state.isLoading) return;
-
-                      // الكيوبت هيقرأ القيم من state (اللي بتتحدث من onChanged)
                       cubit.createAccount();
                     },
                   ),

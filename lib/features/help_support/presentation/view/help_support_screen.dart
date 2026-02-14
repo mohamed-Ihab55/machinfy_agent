@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
+import 'package:machinfy_agent/features/help_support/presentation/widget/documentation_screen.dart';
+import 'package:machinfy_agent/features/help_support/presentation/widget/faqs_screen.dart';
 import 'package:machinfy_agent/features/help_support/presentation/widget/help_tile.dart';
 import 'package:machinfy_agent/features/setting/presentation/widgets/section_title.dart';
 
@@ -67,13 +69,25 @@ class HelpSupportScreen extends StatelessWidget {
             icon: Icons.question_answer_outlined,
             title: 'FAQs',
             subtitle: 'Find answers to common questions',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FAQsScreen()),
+              );
+            },
           ),
           HelpTile(
             icon: Icons.book_outlined,
             title: 'Documentation',
             subtitle: 'Read our detailed guides',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DocumentationScreen(),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: 30),
