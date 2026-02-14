@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/features/help_support/presentation/models/faq_data.dart';
 import 'package:machinfy_agent/features/help_support/presentation/models/faq_item_model.dart';
-import 'package:machinfy_agent/features/help_support/presentation/widget/faq_custom_appbar.dart';
+import 'package:machinfy_agent/features/help_support/presentation/widget/custom_appbar.dart';
 import 'package:machinfy_agent/features/help_support/presentation/widget/faq_empty_state.dart';
 import 'package:machinfy_agent/features/help_support/presentation/widget/faq_list.dart';
 import 'package:machinfy_agent/features/help_support/presentation/widget/faq_search_section.dart';
@@ -50,7 +50,7 @@ class _FAQsBodyScreenState extends State<FAQsBodyScreen> {
     // final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: const FAQsAppBar(),
+      appBar: const CustomAppBar(title: 'FAQs'),
       body: Column(
         children: [
           SearchSection(
