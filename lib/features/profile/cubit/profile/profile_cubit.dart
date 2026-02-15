@@ -9,9 +9,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(state.copyWith(name: v, clearMessage: true));
   void emailChanged(String v) =>
       emit(state.copyWith(email: v, clearMessage: true));
-  void phoneChanged(String v) =>
-      emit(state.copyWith(phone: v, clearMessage: true));
-  void bioChanged(String v) => emit(state.copyWith(bio: v, clearMessage: true));
 
   String initials() {
     final name = state.name.trim();

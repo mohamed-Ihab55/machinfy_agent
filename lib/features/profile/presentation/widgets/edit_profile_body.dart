@@ -6,8 +6,8 @@ import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/constants.dart';
 
 import 'package:machinfy_agent/core/utils/primary_button.dart';
-import 'package:machinfy_agent/features/authentication/cubit/profile/profile_cubit.dart';
-import 'package:machinfy_agent/features/authentication/cubit/profile/profile_state.dart';
+import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
+import 'package:machinfy_agent/features/profile/cubit/profile/profile_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 
 class ProfileBody extends StatefulWidget {
@@ -21,7 +21,7 @@ class ProfileBodyState extends State<ProfileBody> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
-  late final TextEditingController _bioController;
+  //late final TextEditingController _bioController;
 
   @override
   void initState() {
@@ -30,8 +30,8 @@ class ProfileBodyState extends State<ProfileBody> {
 
     _nameController = TextEditingController(text: state.name);
     _emailController = TextEditingController(text: state.email);
-    _phoneController = TextEditingController(text: state.phone);
-    _bioController = TextEditingController(text: state.bio);
+
+    // _bioController = TextEditingController(text: state.bio);
   }
 
   @override
@@ -39,7 +39,7 @@ class ProfileBodyState extends State<ProfileBody> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _bioController.dispose();
+    // _bioController.dispose();
     super.dispose();
   }
 
@@ -137,17 +137,17 @@ class ProfileBodyState extends State<ProfileBody> {
                   ),
                   const SizedBox(height: 14),
 
-                  AuthTextField(
+                  /*  AuthTextField(
                     label: 'Phone Number',
                     hint: '+20 123 456 7890',
                     controller: _phoneController,
                     prefixIcon: Icons.phone_outlined,
                     keyboardType: TextInputType.phone,
                     onChanged: cubit.phoneChanged,
-                  ),
+                  ),*/
                   const SizedBox(height: 14),
 
-                  Text('Bio', style: Style.fieldLabel),
+                  /*   Text('Bio', style: Style.fieldLabel),
                   const SizedBox(height: 8),
 
                   TextFormField(
@@ -176,8 +176,7 @@ class ProfileBodyState extends State<ProfileBody> {
                         ),
                       ),
                     ),
-                  ),
-
+                  ),*/
                   const SizedBox(height: 18),
 
                   PrimaryButton(
