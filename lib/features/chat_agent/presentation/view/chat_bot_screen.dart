@@ -16,9 +16,8 @@ class ChatBotScreen extends StatelessWidget {
       appBar: CustomAppBar(),
       endDrawer: const MenuDrawer(),
       body: BlocProvider(
-        create: (context) => ChatCubit(openAIService: OpenAIService(
-                          apiKey: AppConfig.openAIApiKey,
-                        ),),
+        create: (_) => ChatCubit(openAIService: OpenAIService()),
+
         child: ChatBotScreenBody(),
       ),
     );

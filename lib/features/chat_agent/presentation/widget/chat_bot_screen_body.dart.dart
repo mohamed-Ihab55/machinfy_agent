@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:machinfy_agent/core/assets.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/chat_agent/cubit/chat_cubit.dart';
+import 'package:machinfy_agent/features/chat_agent/models/chat_message.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/widget/message_bubble.dart';
 
 class ChatBotScreenBody extends StatefulWidget {
@@ -17,6 +21,13 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  // Global chat (لو عايزاه per-user قولّي واغيّره لك)
+  final CollectionReference<Map<String, dynamic>> _messagesRef =
+      FirebaseFirestore.instance.collection('messages');
+
+  // لمنع تكرار حفظ نفس ردّ الـassistant
+  String? _lastSavedAssistant;
+
   @override
   void dispose() {
     _messageController.dispose();
@@ -28,27 +39,84 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
       );
     }
   }
 
+  Future<void> _saveMessage({
+    required String content,
+    required MessageRole role,
+  }) async {
+    await _messagesRef.add({
+      'content': content.trim(),
+      'role': role.name, // user / assistant
+      'timestamp': FieldValue.serverTimestamp(),
+      // اختياري لو عايزة تعرفي صاحب الرسالة
+      'uid': FirebaseAuth.instance.currentUser?.uid,
+      'email': FirebaseAuth.instance.currentUser?.email,
+    });
+  }
+
+  Future<void> _sendUserMessage(ChatState state, String raw) async {
+    final text = raw.trim();
+    if (text.isEmpty) return;
+    if (state is ChatLoading) return;
+
+    // 1) حفظ رسالة المستخدم في Firestore
+    await _saveMessage(content: text, role: MessageRole.user);
+
+    // 2) ابعتي للـCubit عشان يجيب رد AI
+    context.read<ChatCubit>().sendMessage(text);
+
+    _messageController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatCubit, ChatState>(
-      listener: (context, state) {
-        if (state is ChatSuccess || state is ChatError) {
+      listener: (context, state) async {
+        if (state is ChatSuccess) {
+          // نفترض آخر رسالة في state.messages هي ردّ assistant
+          final last = state.messages.isNotEmpty ? state.messages.last : null;
+
+          if (last != null && last.role == MessageRole.assistant) {
+            final txt = last.content.trim();
+            if (txt.isNotEmpty && txt != _lastSavedAssistant) {
+              _lastSavedAssistant = txt;
+              await _saveMessage(content: txt, role: MessageRole.assistant);
+            }
+          }
+
+          _scrollToBottom();
+        }
+
+        if (state is ChatError) {
           _scrollToBottom();
         }
       },
       builder: (context, state) {
         return Column(
           children: [
-            // Chat messages area
             Expanded(
-              child: state.messages.isEmpty
-                  ? Center(
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: _messagesRef
+                    .orderBy('timestamp', descending: false)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  final docs = snapshot.data?.docs ?? [];
+
+                  if (docs.isEmpty) {
+                    return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -62,19 +130,38 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                           ),
                         ],
                       ),
-                    )
-                  : ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      itemCount: state.messages.length,
-                      itemBuilder: (context, index) {
-                        final message = state.messages[index];
-                        return MessageBubble(message: message);
-                      },
-                    ),
+                    );
+                  }
+
+                  // انزل لآخر الشات بعد كل تحديث
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (_) => _scrollToBottom(),
+                  );
+
+                  final messages = docs.map((d) {
+                    final data = d.data();
+
+                    // serverTimestamp ممكن يطلع null أول snapshot
+                    final safe = {
+                      ...data,
+                      'timestamp': data['timestamp'] ?? Timestamp.now(),
+                    };
+
+                    return ChatMessage.fromMap(safe);
+                  }).toList();
+
+                  return ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      return MessageBubble(message: messages[index]);
+                    },
+                  );
+                },
+              ),
             ),
 
-            // Error message display
             if (state is ChatError)
               Container(
                 width: double.infinity,
@@ -97,7 +184,6 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                 ),
               ),
 
-            // Input area
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -118,8 +204,9 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: Theme.of(context).textTheme.bodyLarge,
                           controller: _messageController,
+                          enabled: state is! ChatLoading,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           decoration: InputDecoration(
                             hintText: 'Type your message...',
                             hintStyle: Theme.of(context).textTheme.bodyMedium
@@ -148,14 +235,8 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                           ),
                           maxLines: null,
                           textInputAction: TextInputAction.send,
-                          onSubmitted: (value) {
-                            if (value.trim().isNotEmpty &&
-                                state is! ChatLoading) {
-                              context.read<ChatCubit>().sendMessage(value);
-                              _messageController.clear();
-                            }
-                          },
-                          enabled: state is! ChatLoading,
+                          onSubmitted: (value) =>
+                              _sendUserMessage(state, value),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -184,16 +265,10 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                                 ),
                           onPressed: state is ChatLoading
                               ? null
-                              : () {
-                                  if (_messageController.text
-                                      .trim()
-                                      .isNotEmpty) {
-                                    context.read<ChatCubit>().sendMessage(
-                                      _messageController.text,
-                                    );
-                                    _messageController.clear();
-                                  }
-                                },
+                              : () => _sendUserMessage(
+                                  state,
+                                  _messageController.text,
+                                ),
                         ),
                       ),
                     ],

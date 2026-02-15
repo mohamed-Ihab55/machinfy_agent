@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:machinfy_agent/core/assets.dart';
 import 'package:machinfy_agent/core/typography.dart';
@@ -17,11 +18,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       buildWhen: (p, c) => p.name != c.name || p.email != c.email,
       builder: (context, state) {
+        final user = FirebaseAuth.instance.currentUser;
+
+        final fallbackName = (user?.displayName?.trim().isNotEmpty ?? false)
+            ? user!.displayName!.trim()
+            : (user?.email?.split('@').first ?? 'User');
+
         final name = state.name.trim().isNotEmpty
             ? state.name.trim()
-            : (state.email.split('@').first.isNotEmpty
+            : (state.email.trim().isNotEmpty
                   ? state.email.split('@').first
-                  : 'User');
+                  : fallbackName);
 
         return AppBar(
           title: Row(
