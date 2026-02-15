@@ -1,18 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
 import 'package:machinfy_agent/core/theme/app_theme.dart';
 import 'package:machinfy_agent/core/theme/theme_provider.dart';
-import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 import 'package:machinfy_agent/firebase_options.dart';
-import 'package:provider/provider.dart';
+
+import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const MyApp(),
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => ProfileCubit(
+              auth: FirebaseAuth.instance,
+              firestore: FirebaseFirestore.instance,
+            ),
+          ),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -20,7 +37,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();

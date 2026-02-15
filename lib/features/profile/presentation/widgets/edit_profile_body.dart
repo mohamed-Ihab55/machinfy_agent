@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/core/constants.dart';
-
 import 'package:machinfy_agent/core/utils/primary_button.dart';
+
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
@@ -20,36 +19,38 @@ class ProfileBody extends StatefulWidget {
 class ProfileBodyState extends State<ProfileBody> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
-  late final TextEditingController _phoneController;
-  //late final TextEditingController _bioController;
+
+  bool _seeded = false; // علشان نعبي الكنترولرز مرة واحدة من Firebase
 
   @override
   void initState() {
     super.initState();
-    final state = context.read<ProfileCubit>().state;
-
-    _nameController = TextEditingController(text: state.name);
-    _emailController = TextEditingController(text: state.email);
-
-    // _bioController = TextEditingController(text: state.bio);
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _phoneController.dispose();
-    // _bioController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
     return BlocConsumer<ProfileCubit, ProfileState>(
-      listenWhen: (p, c) => p.message != c.message || p.status != c.status,
+      listenWhen: (p, c) =>
+          p.message != c.message ||
+          p.status != c.status ||
+          p.name != c.name ||
+          p.email != c.email,
       listener: (context, state) {
+        if (!_seeded && (state.name.isNotEmpty || state.email.isNotEmpty)) {
+          _seeded = true;
+          _nameController.text = state.name;
+          _emailController.text = state.email;
+        }
+
         final msg = state.message;
         if (msg == null) return;
 
@@ -108,9 +109,11 @@ class ProfileBodyState extends State<ProfileBody> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        InkWell(
-                          onTap: cubit.changePhoto,
-                          child: Text('Change Photo', style: Style.link),
+                        Text(
+                          'Change Photo',
+                          style: Style.link.copyWith(
+                            color: Style.link.color?.withOpacity(0.5),
+                          ),
                         ),
                       ],
                     ),
@@ -120,69 +123,32 @@ class ProfileBodyState extends State<ProfileBody> {
 
                   AuthTextField(
                     label: 'Full Name',
-                    hint: user?.displayName ?? 'No Name',
+                    hint: state.name.isEmpty ? 'No Name' : state.name,
                     controller: _nameController,
                     prefixIcon: Icons.person_outline,
                     onChanged: cubit.nameChanged,
                   ),
                   const SizedBox(height: 14),
 
+                  // الأفضل الإيميل يبقى Read-only
+                  // لأنه تغييره في FirebaseAuth غالبًا يحتاج re-auth / verify
                   AuthTextField(
                     label: 'Email Address',
-                    hint: user?.email ?? 'No Email',
+                    hint: state.email.isEmpty ? 'No Email' : state.email,
                     controller: _emailController,
                     prefixIcon: Icons.mail_outline,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: cubit.emailChanged,
+                    onChanged: (_) {}, // متمنعش لو Widget مفيهوش enabled
+                    // لو AuthTextField بيدعم readOnly/ enabled استخدمه:
+                    // enabled: false,
+                    // readOnly: true,
                   ),
-                  const SizedBox(height: 14),
-
-                  /*  AuthTextField(
-                    label: 'Phone Number',
-                    hint: '+20 123 456 7890',
-                    controller: _phoneController,
-                    prefixIcon: Icons.phone_outlined,
-                    keyboardType: TextInputType.phone,
-                    onChanged: cubit.phoneChanged,
-                  ),*/
-                  const SizedBox(height: 14),
-
-                  /*   Text('Bio', style: Style.fieldLabel),
-                  const SizedBox(height: 8),
-
-                  TextFormField(
-                    controller: _bioController,
-                    maxLines: 5,
-                    onChanged: cubit.bioChanged,
-                    style: Style.fieldText,
-                    decoration: InputDecoration(
-                      hintText: 'Tell us about yourself...',
-                      hintStyle: Style.fieldHint,
-                      filled: true,
-                      fillColor: Colors.transparent,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 14,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(
-                          color: kPrimaryColor,
-                          width: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),*/
                   const SizedBox(height: 18),
 
                   PrimaryButton(
                     text: 'Save Changes',
                     isLoading: state.isLoading,
-                    onTap: () => cubit.saveChanges(),
+                    onTap: cubit.saveChanges,
                   ),
 
                   const SizedBox(height: 24),

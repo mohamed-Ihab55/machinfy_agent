@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:machinfy_agent/core/assets.dart';
 import 'package:machinfy_agent/core/typography.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
+import 'package:machinfy_agent/features/profile/cubit/profile/profile_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -11,14 +14,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        final user = snapshot.data;
-
-        final name = (user?.displayName?.trim().isNotEmpty ?? false)
-            ? user!.displayName!.trim()
-            : user?.email?.split('@').first ?? 'User';
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      buildWhen: (p, c) => p.name != c.name || p.email != c.email,
+      builder: (context, state) {
+        final name = state.name.trim().isNotEmpty
+            ? state.name.trim()
+            : (state.email.split('@').first.isNotEmpty
+                  ? state.email.split('@').first
+                  : 'User');
 
         return AppBar(
           title: Row(
@@ -47,9 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: Builder(
                 builder: (context) => IconButton(
                   icon: const Icon(Icons.menu, size: 35),
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
                 ),
               ),
             ),
