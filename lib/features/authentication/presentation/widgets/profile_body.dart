@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,6 +45,8 @@ class ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return BlocConsumer<ProfileCubit, ProfileState>(
       listenWhen: (p, c) => p.message != c.message || p.status != c.status,
       listener: (context, state) {
@@ -117,7 +120,7 @@ class ProfileBodyState extends State<ProfileBody> {
 
                   AuthTextField(
                     label: 'Full Name',
-                    hint: 'Ahmed Hassan',
+                    hint: user?.displayName ?? 'No Name',
                     controller: _nameController,
                     prefixIcon: Icons.person_outline,
                     onChanged: cubit.nameChanged,
@@ -126,7 +129,7 @@ class ProfileBodyState extends State<ProfileBody> {
 
                   AuthTextField(
                     label: 'Email Address',
-                    hint: 'name@company.com',
+                    hint: user?.email ?? 'No Email',
                     controller: _emailController,
                     prefixIcon: Icons.mail_outline,
                     keyboardType: TextInputType.emailAddress,

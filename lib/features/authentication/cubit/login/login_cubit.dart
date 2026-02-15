@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machinfy_agent/features/authentication/data/remember_me_storage.dart';
 import 'login_state.dart';
 
@@ -70,31 +71,19 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> signIn() async {
     if (!_validate()) return;
 
-    emit(state.copyWith(status: LoginStatus.loading, clearMessage: true));
+    emit(state.copyWith(status: LoginStatus.loading));
 
     try {
-      // placeholder
-      await Future.delayed(const Duration(seconds: 2));
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: state.email.trim(),
+        password: state.password.trim(),
+      );
 
-      // ✅ احفظ/امسح الايميل حسب rememberMe (بعد نجاح تسجيل الدخول)
-      if (state.rememberMe) {
-        await RememberMeStorage.setRememberEmail(state.email.trim());
-      } else {
-        await RememberMeStorage.clearRememberEmail();
-      }
+      await credential.user?.reload();
 
       emit(state.copyWith(status: LoginStatus.success));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: LoginStatus.failure,
-          message: 'Login failed, please try again',
-        ),
-      );
-    } finally {
-      if (state.status == LoginStatus.failure) {
-        emit(state.copyWith(status: LoginStatus.idle));
-      }
+    } on FirebaseAuthException catch (e) {
+      emit(state.copyWith(status: LoginStatus.failure, message: e.message));
     }
   }
 

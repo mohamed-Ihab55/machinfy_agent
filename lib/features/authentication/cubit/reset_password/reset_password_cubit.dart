@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'reset_password_state.dart';
 
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
@@ -28,27 +29,38 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     );
 
     try {
-      // placeholder (زي اللوجن)
-      await Future.delayed(const Duration(seconds: 2));
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: state.email.trim(),
+      );
 
       emit(
         state.copyWith(
           status: ResetPasswordStatus.success,
-          message: 'Reset link sent to your email',
+          message: 'Reset link has been sent to your email',
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'Something went wrong';
+
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email format';
+      }
+
+      emit(
+        state.copyWith(
+          status: ResetPasswordStatus.failure,
+          message: errorMessage,
         ),
       );
     } catch (_) {
       emit(
         state.copyWith(
           status: ResetPasswordStatus.failure,
-          message: 'Failed to send reset link, try again',
+          message: 'Failed to send reset link',
         ),
       );
-    } finally {
-      // اختياري: رجّعها idle بعد نجاح/فشل
-      if (state.status != ResetPasswordStatus.loading) {
-        emit(state.copyWith(status: ResetPasswordStatus.idle));
-      }
     }
   }
 

@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
-import 'package:machinfy_agent/features/authentication/presentation/views/edit_screen.dart';
+import 'package:machinfy_agent/features/profile/presentation/view/edit_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/widgets/profile_info_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -9,6 +10,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile'), centerTitle: true),
       body: SingleChildScrollView(
@@ -64,9 +67,11 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Mohamed Ehab', style: Style.bodyLarge),
+            Text(user?.displayName ?? 'No Name', style: Style.bodyLarge),
+
             const SizedBox(height: 8),
-            const Text('mehab1638@gmail.com', style: Style.bodysmall),
+            Text(user?.email ?? 'No Email', style: Style.bodysmall),
+
             const SizedBox(height: 30),
 
             // Profile Information
@@ -77,21 +82,21 @@ class ProfileScreen extends StatelessWidget {
                   ProfileInfoTile(
                     icon: Icons.person_outline,
                     label: 'Full Name',
-                    value: 'Mohamed Ehab',
+                    value: user?.displayName ?? 'No Name',
                     onTap: () {},
                   ),
                   ProfileInfoTile(
                     icon: Icons.email_outlined,
                     label: 'Email',
-                    value: 'mehab1638@gmail.com',
+                    value: user?.email ?? 'No Email',
                     onTap: () {},
                   ),
-                  ProfileInfoTile(
+                  /*  ProfileInfoTile(
                     icon: Icons.phone_outlined,
                     label: 'Phone',
                     value: '+20 123 456 7890',
                     onTap: () {},
-                  ),
+                  ),*/
                 ],
               ),
             ),

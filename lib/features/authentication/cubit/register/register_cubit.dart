@@ -82,47 +82,24 @@ class RegisterCubit extends Cubit<RegisterState> {
   Future<void> createAccount() async {
     if (!_validate()) return;
 
-    // امنعي تكرار الضغط وقت loading
-    if (state.status == RegisterStatus.loading) return;
-
-    emit(state.copyWith(status: RegisterStatus.loading, clearMessage: true));
+    emit(state.copyWith(status: RegisterStatus.loading));
 
     try {
-      final name = state.name.trim();
-      final email = state.email.trim();
-      final pass = state.password;
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: state.email.trim(),
+            password: state.password.trim(),
+          );
 
-      final cred = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: pass,
-      );
+      // 👇 أهم سطر
+      await credential.user!.updateDisplayName(state.name.trim());
 
-      // اختياري: set display name
-      if (name.isNotEmpty) {
-        await cred.user?.updateDisplayName(name);
-        await cred.user?.reload();
-      }
+      // مهم علشان يعمل refresh
+      await credential.user!.reload();
 
       emit(state.copyWith(status: RegisterStatus.success));
     } on FirebaseAuthException catch (e) {
-      emit(
-        state.copyWith(
-          status: RegisterStatus.failure,
-          message: _mapFirebaseError(e),
-        ),
-      );
-
-      // رجّعي idle بعد ما الـ UI يلتقط failure ويعرض SnackBar
-      emit(state.copyWith(status: RegisterStatus.idle));
-    } catch (_) {
-      emit(
-        state.copyWith(
-          status: RegisterStatus.failure,
-          message: 'Registration failed, please try again',
-        ),
-      );
-
-      emit(state.copyWith(status: RegisterStatus.idle));
+      emit(state.copyWith(status: RegisterStatus.failure, message: e.message));
     }
   }
 
