@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:machinfy_agent/core/theme/app_theme.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      home: const ChatBotScreen(),
+      home: const SplashScreen(),
     );
   }
 }
