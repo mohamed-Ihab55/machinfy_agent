@@ -1,4 +1,17 @@
-class AppConfig {
-  static const String openAIApiKey = 'APIKEY';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class ApiConfig {
+  static const String baseUrl = "https://api.openai.com/v1";
+
+  static String get apiKey {
+    final key = dotenv.env['OPENAI_API_KEY'] ?? '';
+    return key.trim();
+  }
+
+  static Map<String, String> get headers => {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $apiKey",
+  };
+
+  static String get chatCompletions => "$baseUrl/chat/completions";
 }
-//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

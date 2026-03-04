@@ -21,11 +21,9 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  // Global chat (لو عايزاه per-user قولّي واغيّره لك)
   final CollectionReference<Map<String, dynamic>> _messagesRef =
       FirebaseFirestore.instance.collection('messages');
 
-  // لمنع تكرار حفظ نفس ردّ الـassistant
   String? _lastSavedAssistant;
 
   @override
@@ -51,9 +49,8 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
   }) async {
     await _messagesRef.add({
       'content': content.trim(),
-      'role': role.name, // user / assistant
+      'role': role.name,
       'timestamp': FieldValue.serverTimestamp(),
-      // اختياري لو عايزة تعرفي صاحب الرسالة
       'uid': FirebaseAuth.instance.currentUser?.uid,
       'email': FirebaseAuth.instance.currentUser?.email,
     });
@@ -64,10 +61,8 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
     if (text.isEmpty) return;
     if (state is ChatLoading) return;
 
-    // 1) حفظ رسالة المستخدم في Firestore
     await _saveMessage(content: text, role: MessageRole.user);
 
-    // 2) ابعتي للـCubit عشان يجيب رد AI
     context.read<ChatCubit>().sendMessage(text);
 
     _messageController.clear();
@@ -78,7 +73,6 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
     return BlocConsumer<ChatCubit, ChatState>(
       listener: (context, state) async {
         if (state is ChatSuccess) {
-          // نفترض آخر رسالة في state.messages هي ردّ assistant
           final last = state.messages.isNotEmpty ? state.messages.last : null;
 
           if (last != null && last.role == MessageRole.assistant) {
@@ -133,7 +127,6 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                     );
                   }
 
-                  // انزل لآخر الشات بعد كل تحديث
                   WidgetsBinding.instance.addPostFrameCallback(
                     (_) => _scrollToBottom(),
                   );
@@ -141,13 +134,12 @@ class _ChatBotScreenBodyState extends State<ChatBotScreenBody> {
                   final messages = docs.map((d) {
                     final data = d.data();
 
-                    // serverTimestamp ممكن يطلع null أول snapshot
                     final safe = {
                       ...data,
                       'timestamp': data['timestamp'] ?? Timestamp.now(),
                     };
 
-                    return ChatMessage.fromMap(safe);
+                    return ChatMessage.fromJson(safe);
                   }).toList();
 
                   return ListView.builder(
