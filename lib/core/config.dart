@@ -1,3 +1,4 @@
 class AppConfig {
-  static const String openAIApiKey = 'YOUR_OPENAI_API_KEY_HERE';
+  static const String openAIApiKey = 'APIKEY';
 }
+//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
