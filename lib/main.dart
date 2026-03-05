@@ -4,6 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
+import 'package:machinfy_agent/features/privacy_security/presentation/view/cubit/privacy_cubit.dart';
+import 'package:machinfy_agent/features/privacy_security/presentation/view/service/biometric_service.dart';
+import 'package:machinfy_agent/features/privacy_security/presentation/view/service/setting_service.dart';
 import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +27,12 @@ Future<void> main() async {
       providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (_) => PrivacyCubit(
+              SettingsService(),
+              BiometricService(),
+            )..init(),
+          ),
           BlocProvider(
             create: (_) => ProfileCubit(
               auth: FirebaseAuth.instance,
@@ -48,7 +58,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const ChatBotScreen(),
     );
   }
 }

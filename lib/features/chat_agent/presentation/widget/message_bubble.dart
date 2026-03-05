@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machinfy_agent/core/assets.dart';
 import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/chat_agent/models/chat_message.dart';
@@ -23,8 +24,13 @@ class MessageBubble extends StatelessWidget {
           if (!isUser) ...[
             CircleAvatar(
               radius: 16,
-              backgroundColor: kPrimaryColor,
-              child: const Icon(Icons.smart_toy, color: Colors.white, size: 18),
+              backgroundColor: kBackgroundColor,
+              child: Image.asset(
+                AssetsData.logo,
+                width: 45,
+                height: 45,
+                // color: Colors.white,
+              ),
             ),
             const SizedBox(width: 8),
           ],

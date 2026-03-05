@@ -7,7 +7,7 @@ class SwitchSettingTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
 
   const SwitchSettingTile({
     super.key,
@@ -42,6 +42,8 @@ class SwitchSettingTile extends StatelessWidget {
             ),
           ),
           Switch(
+            // activeTrackColor: kPrimaryColor,
+            inactiveTrackColor: Colors.grey.withValues(alpha: 0.3),
             value: value,
             onChanged: onChanged,
             activeThumbColor: kPrimaryColor,

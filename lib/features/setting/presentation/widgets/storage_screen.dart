@@ -272,18 +272,30 @@ class _StorageScreenState extends State<StorageScreen> {
   Future<bool?> _showConfirmDialog(String title, String message) {
     return showDialog<bool>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
+        backgroundColor: Color(0xff0062C5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          title,
+          style: Style.bodysmall.copyWith(color: Colors.white),
+        ),
+        content: Text(
+          message,
+          style: Style.bodysmall.copyWith(color: Colors.white),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: Style.bodysmall.copyWith(color: Colors.white),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: kErrorColor),
-            child: const Text('Continue'),
+            child: const Text('Continue', style: Style.bodysmall),
           ),
         ],
       ),

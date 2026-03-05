@@ -16,7 +16,7 @@ class _ChatPageState extends State<ChatPage> {
   final ChatUser _user = ChatUser(id: '1', firstName: 'You');
   final ChatUser _bot = ChatUser(id: '2', firstName: 'AI');
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   @override
   void initState() {
