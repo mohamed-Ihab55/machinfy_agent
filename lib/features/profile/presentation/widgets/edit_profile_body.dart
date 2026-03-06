@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,16 +10,17 @@ import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_state.dart';
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 
-class ProfileBody extends StatefulWidget {
-  const ProfileBody({super.key});
+class EditProfileScreenBody extends StatefulWidget {
+  const EditProfileScreenBody({super.key});
 
   @override
-  State<ProfileBody> createState() => ProfileBodyState();
+  State<EditProfileScreenBody> createState() => EditProfileScreenBodyState();
 }
 
-class ProfileBodyState extends State<ProfileBody> {
+class EditProfileScreenBodyState extends State<EditProfileScreenBody> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
+  final user = FirebaseAuth.instance.currentUser;
 
   bool _seeded = false; // علشان نعبي الكنترولرز مرة واحدة من Firebase
 
@@ -123,7 +125,7 @@ class ProfileBodyState extends State<ProfileBody> {
 
                   AuthTextField(
                     label: 'Full Name',
-                    hint: state.name.isEmpty ? 'No Name' : state.name,
+                    hint: user?.displayName ?? 'No Name',
                     controller: _nameController,
                     prefixIcon: Icons.person_outline,
                     onChanged: cubit.nameChanged,
@@ -134,7 +136,7 @@ class ProfileBodyState extends State<ProfileBody> {
                   // لأنه تغييره في FirebaseAuth غالبًا يحتاج re-auth / verify
                   AuthTextField(
                     label: 'Email Address',
-                    hint: state.email.isEmpty ? 'No Email' : state.email,
+                    hint: user?.email ?? 'No Email',
                     controller: _emailController,
                     prefixIcon: Icons.mail_outline,
                     keyboardType: TextInputType.emailAddress,
@@ -148,7 +150,13 @@ class ProfileBodyState extends State<ProfileBody> {
                   PrimaryButton(
                     text: 'Save Changes',
                     isLoading: state.isLoading,
-                    onTap: cubit.saveChanges,
+                    onTap: () async {
+                      await cubit.saveChanges();
+
+                      if (context.mounted) {
+                        Navigator.pop(context, true);
+                      }
+                    },
                   ),
 
                   const SizedBox(height: 24),

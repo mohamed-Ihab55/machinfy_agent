@@ -12,14 +12,14 @@ import 'login_form.dart';
 import 'remember_forgot_row.dart';
 import 'signup_row.dart';
 
-class LoginBody extends StatefulWidget {
-  const LoginBody({super.key});
+class LoginScreenBody extends StatefulWidget {
+  const LoginScreenBody({super.key});
 
   @override
-  State<LoginBody> createState() => _LoginBodyState();
+  State<LoginScreenBody> createState() => _LoginScreenBodyState();
 }
 
-class _LoginBodyState extends State<LoginBody> {
+class _LoginScreenBodyState extends State<LoginScreenBody> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 

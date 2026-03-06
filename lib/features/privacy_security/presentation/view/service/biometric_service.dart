@@ -34,7 +34,7 @@ class BiometricService {
   Future<bool> authenticate() async {
     try {
       final isSupported = await this.isSupported();
-      final hasCreds = await this.hasCredentials();
+      final hasCreds = await hasCredentials();
 
       if (!isSupported || !hasCreds) {
         print('No biometrics or credentials set on device.');
@@ -57,7 +57,7 @@ class BiometricService {
   Future<bool> authenticateWithFallback() async {
     try {
       final isSupported = await this.isSupported();
-      final hasCreds = await this.hasCredentials();
+      final hasCreds = await hasCredentials();
 
       if (!isSupported || !hasCreds) {
         print('No credentials available for authentication.');

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:machinfy_agent/core/assets.dart';
-import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_state.dart';

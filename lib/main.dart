@@ -37,14 +37,14 @@ Future<void> main() async {
             ),
           ),
         ],
-        child: const MyApp(),
+        child: const MachinfyAgent(),
       ),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MachinfyAgent extends StatelessWidget {
+  const MachinfyAgent({super.key});
 
   @override
   Widget build(BuildContext context) {

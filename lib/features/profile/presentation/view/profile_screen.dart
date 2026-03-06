@@ -5,9 +5,14 @@ import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/profile/presentation/view/edit_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/widgets/profile_info_tile.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -108,13 +113,17 @@ class ProfileScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfileEditScreen(),
+                      builder: (context) => const EditProfileScreen(),
                     ),
                   );
+
+                  if (result == true) {
+                    setState(() {}); // إعادة بناء الشاشة وتحديث البيانات
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kPrimaryColor,

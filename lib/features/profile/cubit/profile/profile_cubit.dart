@@ -21,10 +21,11 @@ class ProfileCubit extends Cubit<ProfileState> {
   StreamSubscription<User?>? _authSub;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _profileSub;
 
+  /// Start listening to auth + profile changes
   void start() {
     _authSub?.cancel();
     _authSub = _auth.userChanges().listen(_onUserChanged);
-    // يشتغل فورًا على currentUser لو موجود:
+
     _onUserChanged(_auth.currentUser);
   }
 
@@ -32,17 +33,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     await _profileSub?.cancel();
 
     if (user == null) {
-      emit(const ProfileState()); // رجّع state فاضي عند logout
+      emit(const ProfileState());
       return;
     }
 
-    // قيم مبدئية من Auth (fallback)
+    /// Fallback data from FirebaseAuth
     emit(
       state.copyWith(
         uid: user.uid,
         name: user.displayName ?? '',
         email: user.email ?? '',
-
         hydrated: true,
         clearMessage: true,
       ),
@@ -50,14 +50,18 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     final docRef = _firestore.collection('users').doc(user.uid);
 
-    // لو أول مرة، اعمل doc مبدئي
-    await docRef.set({
-      'name': user.displayName ?? '',
-      'email': user.email ?? '',
+    /// Ensure document exists
+    final doc = await docRef.get();
 
-      'updatedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+    if (!doc.exists) {
+      await docRef.set({
+        'name': user.displayName ?? '',
+        'email': user.email ?? '',
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
 
+    /// Listen to Firestore profile updates
     _profileSub = docRef.snapshots().listen((snap) {
       final data = snap.data();
       if (data == null) return;
@@ -65,38 +69,47 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(
         state.copyWith(
           uid: user.uid,
-          name: (data['name'] as String?) ?? (user.displayName ?? ''),
-          email: (data['email'] as String?) ?? (user.email ?? ''),
-
+          name: (data['name'] as String?) ?? user.displayName ?? '',
+          email: (data['email'] as String?) ?? user.email ?? '',
           hydrated: true,
         ),
       );
     });
   }
 
-  void nameChanged(String v) =>
-      emit(state.copyWith(name: v, clearMessage: true));
-  // الأفضل نخلي الإيميل read-only في الـ UI (هشرح تحت)
-  void emailChanged(String v) =>
-      emit(state.copyWith(email: v, clearMessage: true));
+  /// Handle name change in UI
+  void nameChanged(String value) {
+    emit(state.copyWith(name: value, clearMessage: true));
+  }
 
+  /// Email usually read-only
+  void emailChanged(String value) {
+    emit(state.copyWith(email: value, clearMessage: true));
+  }
+
+  /// Generate user initials
   String initials() {
     final name = state.name.trim();
     if (name.isEmpty) return 'U';
+
     final parts = name
         .split(RegExp(r'\s+'))
         .where((e) => e.isNotEmpty)
         .toList();
-    final first = parts.isNotEmpty ? parts[0][0] : 'U';
+
+    final first = parts[0][0];
     final second = parts.length > 1 ? parts[1][0] : '';
+
     return (first + second).toUpperCase();
   }
 
+  /// Save profile changes
   Future<void> saveChanges() async {
     emit(state.copyWith(status: ProfileStatus.loading, clearMessage: true));
 
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      final user = _auth.currentUser;
+
       if (user == null) {
         emit(
           state.copyWith(
@@ -109,19 +122,16 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       final name = state.name.trim();
 
-      // ✅ طالما الإيميل هتسيبيه read-only: متحاوليش updateEmail خالص
+      /// Update FirebaseAuth profile
       await user.updateDisplayName(name);
       await user.reload();
 
-      // ✅ حفظ Firestore (اللي هيخلّي كل الأب يسمع)
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-        {
-          'name': name,
-          'email': user.email, // خدها من Auth
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
-      ); // merge موثق رسميًا :contentReference[oaicite:2]{index=2}
+      /// Update Firestore profile
+      await _firestore.collection('users').doc(user.uid).set({
+        'name': name,
+        'email': user.email,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
 
       emit(
         state.copyWith(
@@ -137,14 +147,14 @@ class ProfileCubit extends Cubit<ProfileState> {
         ),
       );
     } on FirebaseException catch (e, st) {
-      debugPrint('FIRESTORE CODE: ${e.code}');
-      debugPrint('FIRESTORE MESSAGE: ${e.message}');
-      debugPrint('STACK: $st');
+      debugPrint('Firestore error: ${e.code}');
+      debugPrint('Message: ${e.message}');
+      debugPrintStack(stackTrace: st);
 
       emit(
         state.copyWith(
           status: ProfileStatus.failure,
-          message: 'Firestore: ${e.code} | ${e.message}',
+          message: 'Firestore: ${e.code}',
         ),
       );
     }

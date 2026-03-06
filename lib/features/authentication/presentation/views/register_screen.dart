@@ -11,7 +11,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => RegisterCubit(),
-      child: const RegisterBody(),
+      child: const RegisterScreenBody(),
     );
   }
 }

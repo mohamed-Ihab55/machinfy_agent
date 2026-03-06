@@ -9,14 +9,14 @@ import 'package:machinfy_agent/features/authentication/cubit/register/register_s
 import 'package:machinfy_agent/features/authentication/presentation/widgets/auth_text_field.dart';
 import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
 
-class RegisterBody extends StatefulWidget {
-  const RegisterBody({super.key});
+class RegisterScreenBody extends StatefulWidget {
+  const RegisterScreenBody({super.key});
 
   @override
-  State<RegisterBody> createState() => RegisterBodyState();
+  State<RegisterScreenBody> createState() => RegisterScreenBodyState();
 }
 
-class RegisterBodyState extends State<RegisterBody> {
+class RegisterScreenBodyState extends State<RegisterScreenBody> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
@@ -150,7 +150,7 @@ class RegisterBodyState extends State<RegisterBody> {
                           style: Style.smallGrey.copyWith(
                             color: Theme.of(
                               context,
-                            ).colorScheme.onSurface.withOpacity(0.7),
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
                           ),
                         ),
                       ),

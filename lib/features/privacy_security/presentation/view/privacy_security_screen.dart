@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/cubit/privacy_cubit.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/cubit/privacy_state.dart';
 import 'package:machinfy_agent/features/setting/presentation/widgets/switch_setting_tile.dart';
