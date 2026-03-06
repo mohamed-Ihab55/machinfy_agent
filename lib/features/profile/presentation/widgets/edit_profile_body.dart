@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:machinfy_agent/core/typography.dart';
-import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 
 import 'package:machinfy_agent/features/profile/cubit/profile/profile_cubit.dart';
@@ -22,7 +20,7 @@ class EditProfileScreenBodyState extends State<EditProfileScreenBody> {
   late final TextEditingController _emailController;
   final user = FirebaseAuth.instance.currentUser;
 
-  bool _seeded = false; // علشان نعبي الكنترولرز مرة واحدة من Firebase
+  bool _seeded = false;
 
   @override
   void initState() {
@@ -64,65 +62,21 @@ class EditProfileScreenBodyState extends State<EditProfileScreenBody> {
         final cubit = context.read<ProfileCubit>();
 
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Edit Profile'),
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back, size: 22),
+            ),
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back, size: 22),
-                      ),
-                      const SizedBox(width: 4),
-                      Text('Profile', style: Style.appBarTitle),
-                    ],
-                  ),
-                  const Divider(
-                    height: 18,
-                    thickness: 1,
-                    color: Color(0xFFE5E7EB),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Center(
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 86,
-                          height: 86,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: kPrimaryColor,
-                              width: 2.5,
-                            ),
-                          ),
-                          child: Text(
-                            cubit.initials(),
-                            style: Style.bodyLarge.copyWith(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Change Photo',
-                          style: Style.link.copyWith(
-                            color: Style.link.color?.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 22),
-
+                  const SizedBox(height: 30),
                   AuthTextField(
                     label: 'Full Name',
                     hint: user?.displayName ?? 'No Name',
@@ -140,10 +94,7 @@ class EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                     controller: _emailController,
                     prefixIcon: Icons.mail_outline,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (_) {}, // متمنعش لو Widget مفيهوش enabled
-                    // لو AuthTextField بيدعم readOnly/ enabled استخدمه:
-                    // enabled: false,
-                    // readOnly: true,
+                    onChanged: (_) {},
                   ),
                   const SizedBox(height: 18),
 

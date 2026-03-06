@@ -24,7 +24,7 @@ class MessageBubble extends StatelessWidget {
           if (!isUser) ...[
             CircleAvatar(
               radius: 16,
-              backgroundColor: kBackgroundColor,
+              backgroundColor: Colors.transparent,
               child: Image.asset(
                 AssetsData.logo,
                 width: 45,
@@ -59,14 +59,6 @@ class MessageBubble extends StatelessWidget {
               ),
             ),
           ),
-          if (isUser) ...[
-            const SizedBox(width: 8),
-            CircleAvatar(
-              radius: 16,
-              backgroundColor: Colors.grey[300],
-              child: const Icon(Icons.person, color: Colors.white, size: 18),
-            ),
-          ],
         ],
       ),
     );

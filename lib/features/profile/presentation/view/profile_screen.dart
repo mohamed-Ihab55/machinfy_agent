@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machinfy_agent/core/constants.dart';
-import 'package:machinfy_agent/core/typography.dart';
 import 'package:machinfy_agent/features/profile/presentation/view/edit_screen.dart';
 import 'package:machinfy_agent/features/profile/presentation/widgets/profile_info_tile.dart';
 
@@ -23,63 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            // Profile Picture
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: kSecondaryColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: kSendAndCircularIndicator,
-                        width: 4,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: kTextColor.withValues(alpha: 0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        'ME',
-                        style: Style.headingLarge.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: kPrimaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        color: kSendAndCircularIndicator,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(user?.displayName ?? 'No Name', style: Style.bodyLarge),
-
-            const SizedBox(height: 8),
-            Text(user?.email ?? 'No Email', style: Style.bodysmall),
-
-            const SizedBox(height: 30),
-
-            // Profile Information
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -96,18 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     value: user?.email ?? 'No Email',
                     onTap: () {},
                   ),
-                  /*  ProfileInfoTile(
-                    icon: Icons.phone_outlined,
-                    label: 'Phone',
-                    value: '+20 123 456 7890',
-                    onTap: () {},
-                  ),*/
                 ],
               ),
             ),
-
-            const SizedBox(height: 30),
-
+            const SizedBox(height: 10),
             // Edit Profile Button
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),

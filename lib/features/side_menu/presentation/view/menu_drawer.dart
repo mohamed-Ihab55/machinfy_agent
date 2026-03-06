@@ -41,7 +41,7 @@ class MenuDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
-                ).colorScheme.onSurface.withOpacity(0.06),
+                ).colorScheme.onSurface.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -90,7 +90,7 @@ class MenuDrawer extends StatelessWidget {
                               style: Style.bodysmall.copyWith(
                                 color: Theme.of(
                                   context,
-                                ).colorScheme.onSurface.withOpacity(0.7),
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -180,7 +180,7 @@ class MenuDrawer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
-                    ).colorScheme.surface.withOpacity(0.8),
+                    ).colorScheme.surface.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -210,12 +210,13 @@ class MenuDrawer extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: const Text('Log Out'),
         content: const Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(color: kPrimaryColor)),
           ),
           TextButton(
             onPressed: () async {
