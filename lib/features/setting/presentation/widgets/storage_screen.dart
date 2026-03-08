@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:machinfy_agent/core/constants.dart';
-import 'package:machinfy_agent/core/typography.dart';
+import 'package:machinfy_agent/features/setting/presentation/services/storage_service.dart';
+import 'package:machinfy_agent/features/setting/presentation/widgets/section_title.dart';
+import 'package:machinfy_agent/features/setting/presentation/widgets/storage_action_card.dart';
+import 'package:machinfy_agent/features/setting/presentation/widgets/storage_overview.dart';
+import 'package:machinfy_agent/features/setting/presentation/widgets/storage_tips.dart';
 
 class StorageScreen extends StatefulWidget {
   const StorageScreen({super.key});
@@ -11,19 +14,52 @@ class StorageScreen extends StatefulWidget {
 
 class _StorageScreenState extends State<StorageScreen> {
   bool isLoading = false;
-
-  // Mock data - replace with actual storage calculation
-  final double totalStorage = 500.0; // MB
-  final double usedStorage = 342.5; // MB
-  final Map<String, double> storageBreakdown = {
-    'Chat History': 125.3,
-    'Downloaded Files': 98.7,
-    'Cache': 87.2,
-    'Media': 31.3,
+  double totalStorage = 500.0;
+  double usedStorage = 0.0;
+  Map<String, double> storageBreakdown = {
+    'Chat History': 0,
+    'Downloaded Files': 0,
+    'Cache': 0,
+    'Media': 0,
   };
 
   double get availableStorage => totalStorage - usedStorage;
-  double get storagePercentage => (usedStorage / totalStorage) * 100;
+  double get storagePercentage =>
+      totalStorage == 0 ? 0 : (usedStorage / totalStorage) * 100;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateStorageInfo();
+  }
+
+  Future<void> _updateStorageInfo() async {
+    setState(() => isLoading = true);
+    final result = await StorageService.calculateStorage();
+    setState(() {
+      storageBreakdown = result;
+      usedStorage = storageBreakdown.values.reduce((a, b) => a + b);
+      isLoading = false;
+    });
+  }
+
+  Future<void> _clearCache() async {
+    final confirmed = await StorageService.showConfirmDialog(
+      context,
+      'Clear Cache',
+      'This will clear ${storageBreakdown['Cache']!.toStringAsFixed(1)} MB of cached data. Continue?',
+    );
+    if (confirmed != true) return;
+
+    await StorageService.clearCache();
+    await _updateStorageInfo();
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cache cleared successfully')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,270 +71,41 @@ class _StorageScreenState extends State<StorageScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _refreshStorage,
+            onPressed: _updateStorageInfo,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Storage Overview Card
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [kPrimaryColor, kSecondaryColor],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF1976D2).withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Total Storage Used',
-                      style: Style.bodysmall.copyWith(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '${usedStorage.toStringAsFixed(1)} MB',
-                      style: Style.headingLarge.copyWith(color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'of ${totalStorage.toStringAsFixed(0)} MB',
-                      style: Style.bodysmall.copyWith(color: Colors.white70),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Storage Bar
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: usedStorage / totalStorage,
-                        minHeight: 10,
-                        backgroundColor: kSubTitleColor,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${storagePercentage.toStringAsFixed(1)}% Used',
-                          style: Style.bodysmall.copyWith(color: Colors.white),
-                        ),
-                        Text(
-                          '${availableStorage.toStringAsFixed(1)} MB Free',
-                          style: Style.bodysmall.copyWith(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              // Quick Actions
-              Text(
-                'Quick Actions',
-                style: Style.bodyLarge.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              _buildActionCard(
-                icon: Icons.cleaning_services_outlined,
-                title: 'Clear Cache',
-                subtitle:
-                    '${storageBreakdown['Cache']!.toStringAsFixed(1)} MB can be cleared',
-                color: Colors.orange,
-                onTap: _clearCache,
-              ),
-              const SizedBox(height: 30),
-              // Tips Section
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.surface.withValues(alpha: 0.9),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.lightbulb_outline,
-                          color: Theme.of(context).iconTheme.color,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Storage Tips',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _buildTip('Clear cache regularly to free up space'),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 30),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiary,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Style.bodysmall.copyWith(fontSize: 16)),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: Style.bodysmall.copyWith(color: kSubTitleColor),
+                  StorageOverview(
+                    usedStorage: usedStorage,
+                    totalStorage: totalStorage,
+                    storagePercentage: storagePercentage,
+                    availableStorage: availableStorage,
+                  ),
+                  const SizedBox(height: 30),
+                  const SectionTitle(title: 'Quick Actions'),
+                  const SizedBox(height: 16),
+                  ActionCard(
+                    icon: Icons.cleaning_services_outlined,
+                    title: 'Clear Cache',
+                    subtitle:
+                        '${storageBreakdown['Cache']!.toStringAsFixed(1)} MB can be cleared',
+                    color: Colors.orange,
+                    onTap: _clearCache,
+                  ),
+                  const SizedBox(height: 30),
+                  const StorageTips(
+                    tips: ['Clear cache regularly to free up space'],
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: kSubTitleColor),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTip(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('• ', style: Theme.of(context).textTheme.headlineSmall),
-          Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _refreshStorage() async {
-    setState(() => isLoading = true);
-    // Simulate refresh
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() => isLoading = false);
-    if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Storage refreshed')));
-    }
-  }
-
-  Future<void> _clearCache() async {
-    final confirmed = await _showConfirmDialog(
-      'Clear Cache',
-      'This will clear ${storageBreakdown['Cache']!.toStringAsFixed(1)} MB of cached data. Continue?',
-    );
-    if (confirmed == true) {
-      // Implement cache clearing logic
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cache cleared successfully')),
-        );
-      }
-    }
-  }
-
-  Future<bool?> _showConfirmDialog(String title, String message) {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: Color(0xff0062C5),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          title,
-          style: Style.bodysmall.copyWith(color: Colors.white),
-        ),
-        content: Text(
-          message,
-          style: Style.bodysmall.copyWith(color: Colors.white),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              'Cancel',
-              style: Style.bodysmall.copyWith(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: kErrorColor),
-            child: const Text('Continue', style: Style.bodysmall),
-          ),
-        ],
-      ),
     );
   }
 }

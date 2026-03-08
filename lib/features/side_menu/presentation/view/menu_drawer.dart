@@ -7,7 +7,7 @@ import 'package:machinfy_agent/features/privacy_security/presentation/view/priva
 import 'package:machinfy_agent/features/profile/presentation/view/profile_screen.dart';
 import 'package:machinfy_agent/features/setting/presentation/view/settings_screen.dart';
 import 'package:machinfy_agent/features/side_menu/presentation/widgets/menu_item_tile.dart';
-import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/splash_screen.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});

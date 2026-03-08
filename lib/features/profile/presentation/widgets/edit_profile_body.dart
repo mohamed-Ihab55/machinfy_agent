@@ -86,8 +86,6 @@ class EditProfileScreenBodyState extends State<EditProfileScreenBody> {
                   ),
                   const SizedBox(height: 14),
 
-                  // الأفضل الإيميل يبقى Read-only
-                  // لأنه تغييره في FirebaseAuth غالبًا يحتاج re-auth / verify
                   AuthTextField(
                     label: 'Email Address',
                     hint: user?.email ?? 'No Email',
