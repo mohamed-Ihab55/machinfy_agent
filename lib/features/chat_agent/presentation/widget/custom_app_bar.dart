@@ -13,12 +13,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
-    // Use Firebase displayName if available, otherwise use the part of the email before @
     final name = (user?.displayName?.trim().isNotEmpty ?? false)
         ? user!.displayName!.trim()
         : (user?.email?.split('@').first ?? 'User');
 
     return AppBar(
+      automaticallyImplyLeading: false,
       elevation: 0,
       scrolledUnderElevation: 0,
       title: Row(
