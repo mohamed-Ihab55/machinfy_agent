@@ -39,9 +39,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
   void _handleState(BuildContext context, LoginState state) {
     if (state.status == LoginStatus.success) {
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (_) => const ChatBotScreen()),
+        (route) => false,
       );
     } else if (state.status == LoginStatus.failure) {
       ScaffoldMessenger.of(

@@ -52,9 +52,10 @@ class RegisterScreenBodyState extends State<RegisterScreenBody> {
       listenWhen: (p, c) => p.status != c.status,
       listener: (context, state) {
         if (state.status == RegisterStatus.success) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const ChatBotScreen()),
+            (route) => false,
           );
         } else if (state.status == RegisterStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
