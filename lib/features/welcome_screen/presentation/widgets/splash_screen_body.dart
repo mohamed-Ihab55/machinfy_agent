@@ -1,29 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:local_auth/local_auth.dart';
+
 import 'package:machinfy_agent/core/utils/primary_button.dart';
 import 'package:machinfy_agent/core/utils/secondary_button.dart';
-import 'package:machinfy_agent/features/authentication/presentation/views/register_screen.dart';
-import 'package:machinfy_agent/features/authentication/presentation/views/login_screen.dart';
 import 'package:machinfy_agent/features/authentication/models/login_view_model.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/login_screen.dart';
+import 'package:machinfy_agent/features/authentication/presentation/views/register_screen.dart';
+import 'package:machinfy_agent/features/chat_agent/presentation/view/chat_bot_screen.dart';
+
 import 'package:provider/provider.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class SplashScreenBody extends StatefulWidget {
+  const SplashScreenBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(),
-      child: const WelcomeScreen(),
-    );
-  }
+  State<SplashScreenBody> createState() => _SplashScreenBodyState();
 }
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class _SplashScreenBodyState extends State<SplashScreenBody> {
+  final LocalAuthentication auth = LocalAuthentication();
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+
+  Future<void> checkLogin() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      bool authenticated = await authenticateUser();
+
+      if (!mounted) return;
+
+      if (authenticated) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const ChatBotScreen()),
+        );
+      }
+    }
+  }
+
+  Future<bool> authenticateUser() async {
+    try {
+      bool canCheck = await auth.canCheckBiometrics;
+      bool supported = await auth.isDeviceSupported();
+
+      if (!canCheck || !supported) {
+        return true; // skip biometric if not supported
+      }
+
+      bool authenticated = await auth.authenticate(
+        localizedReason: 'Authenticate to open the app',
+        biometricOnly: true,
+      );
+
+      return authenticated;
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<LoginViewModel>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -31,8 +79,8 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Spacer(flex: 2), // 👈 مسافة فوق
-              // 🔹 اللوجو
+              const Spacer(flex: 2),
+
               Image.asset(
                 'assets/images/logo.png',
                 width: 70,
@@ -75,31 +123,32 @@ class WelcomeScreen extends StatelessWidget {
               ),
 
               const Spacer(flex: 3),
-              
+
               PrimaryButton(
                 text: 'Sign In',
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
                   );
                 },
                 isLoading: vm.isLoading,
               ),
+
               const SizedBox(height: 12),
+
               SecondaryButton(
                 text: 'Create Account',
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
                   );
                 },
               ),
 
               const Spacer(flex: 1),
 
-              // 🔹 النص الأخير
               const Padding(
                 padding: EdgeInsets.only(bottom: 16),
                 child: Text(
