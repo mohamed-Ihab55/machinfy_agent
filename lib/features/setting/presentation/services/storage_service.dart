@@ -5,7 +5,6 @@ import 'package:machinfy_agent/core/constants.dart';
 import 'package:machinfy_agent/core/typography.dart';
 
 class StorageService {
-  /// Calculate folder size in MB
   static Future<double> _getFolderSize(Directory dir) async {
     double size = 0;
     try {
@@ -20,7 +19,6 @@ class StorageService {
     return size / (1024 * 1024);
   }
 
-  /// Calculate storage info
   static Future<Map<String, double>> calculateStorage() async {
     final appDir = await getApplicationDocumentsDirectory();
     final cacheDir = await getTemporaryDirectory();
@@ -29,7 +27,7 @@ class StorageService {
     final cacheSize = await _getFolderSize(cacheDir);
 
     return {
-      'Chat History': 0, // Add chat folder logic if needed
+      'Chat History': 0,
       'Downloaded Files': docsSize,
       'Cache': cacheSize,
       'Media': 0,
@@ -49,21 +47,32 @@ class StorageService {
     }
   }
 
-  /// Show confirmation dialog
   static Future<bool?> showConfirmDialog(
-      BuildContext context, String title, String message) {
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xff0062C5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(title, style: Style.bodysmall.copyWith(color: Colors.white)),
-        content: Text(message, style: Style.bodysmall.copyWith(color: Colors.white)),
+        title: Text(
+          title,
+          style: Style.bodysmall.copyWith(color: Colors.white),
+        ),
+        content: Text(
+          message,
+          style: Style.bodysmall.copyWith(color: Colors.white),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel', style: Style.bodysmall.copyWith(color: Colors.white)),
+            child: Text(
+              'Cancel',
+              style: Style.bodysmall.copyWith(color: Colors.white),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),

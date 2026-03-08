@@ -34,7 +34,7 @@ class ActionCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: color, size: 24),
@@ -46,7 +46,10 @@ class ActionCard extends StatelessWidget {
                 children: [
                   Text(title, style: Style.bodysmall.copyWith(fontSize: 16)),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: Style.bodysmall.copyWith(color: kSubTitleColor)),
+                  Text(
+                    subtitle,
+                    style: Style.bodysmall.copyWith(color: kSubTitleColor),
+                  ),
                 ],
               ),
             ),

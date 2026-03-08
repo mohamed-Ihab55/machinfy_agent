@@ -29,7 +29,7 @@ class StorageOverview extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1976D2).withOpacity(0.3),
+            color: const Color(0xFF1976D2).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -37,14 +37,23 @@ class StorageOverview extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('Total Storage Used',
-              style: Style.bodysmall.copyWith(color: Colors.white70, fontSize: 16)),
+          Text(
+            'Total Storage Used',
+            style: Style.bodysmall.copyWith(
+              color: Colors.white70,
+              fontSize: 16,
+            ),
+          ),
           const SizedBox(height: 12),
-          Text('${usedStorage.toStringAsFixed(1)} MB',
-              style: Style.headingLarge.copyWith(color: Colors.white)),
+          Text(
+            '${usedStorage.toStringAsFixed(1)} MB',
+            style: Style.headingLarge.copyWith(color: Colors.white),
+          ),
           const SizedBox(height: 8),
-          Text('of ${totalStorage.toStringAsFixed(0)} MB',
-              style: Style.bodysmall.copyWith(color: Colors.white70)),
+          Text(
+            'of ${totalStorage.toStringAsFixed(0)} MB',
+            style: Style.bodysmall.copyWith(color: Colors.white70),
+          ),
           const SizedBox(height: 24),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -59,10 +68,14 @@ class StorageOverview extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${storagePercentage.toStringAsFixed(1)}% Used',
-                  style: Style.bodysmall.copyWith(color: Colors.white)),
-              Text('${availableStorage.toStringAsFixed(1)} MB Free',
-                  style: Style.bodysmall.copyWith(color: Colors.white)),
+              Text(
+                '${storagePercentage.toStringAsFixed(1)}% Used',
+                style: Style.bodysmall.copyWith(color: Colors.white),
+              ),
+              Text(
+                '${availableStorage.toStringAsFixed(1)} MB Free',
+                style: Style.bodysmall.copyWith(color: Colors.white),
+              ),
             ],
           ),
         ],
