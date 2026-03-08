@@ -91,10 +91,8 @@ class RegisterCubit extends Cubit<RegisterState> {
             password: state.password.trim(),
           );
 
-      // 👇 أهم سطر
       await credential.user!.updateDisplayName(state.name.trim());
 
-      // مهم علشان يعمل refresh
       await credential.user!.reload();
 
       emit(state.copyWith(status: RegisterStatus.success));
