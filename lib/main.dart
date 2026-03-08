@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/cubit/privacy_cubit.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/service/biometric_service.dart';
 import 'package:machinfy_agent/features/privacy_security/presentation/view/service/setting_service.dart';
-import 'package:machinfy_agent/features/welcome_screen/presentation/view/welcome_screen.dart';
+import 'package:machinfy_agent/features/welcome_screen/presentation/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:machinfy_agent/core/theme/app_theme.dart';
